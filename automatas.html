@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Simulador de Autómata de Pila (PDA) - Ejercicio 4 (Corregido)</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .banner-principal {
+            background-color: #0078d7; 
+            color: white;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        section {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #input-section {
+            width: 90%;
+            max-width: 350px;
+        }
+
+        #output-section {
+            width: 90%;
+            max-width: 820px;
+            margin-left: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+             .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            #input-section, #output-section {
+                max-width: 90%;
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+
+        h2 {
+            color: #0078d7;
+            border-bottom: 2px solid #0078d7;
+            padding-bottom: 5px;
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        input[type="text"], textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #0078d7;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Estilos de la tabla ID */
+        .simulation-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+        .simulation-table th, .simulation-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .simulation-table th {
+            background-color: #e6f7ff;
+            color: #0078d7;
+            font-weight: bold;
+        }
+        .simulation-message {
+            margin-top: 15px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .simulation-message.accepted {
+            background-color: #e6ffe6;
+            color: #008000;
+        }
+        .simulation-message.rejected {
+            background-color: #ffe6e6;
+            color: #cc0000;
+        }
+        
+        #graph {
+            border: 1px solid #eee;
+            background: #fafafa;
+        }
+        
+        #formalDescription {
+            height: 350px;
+            white-space: pre;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner-principal">
+        <div class="banner-content">
+            Simulador de Autómata de Pila (PDA) - Ejercicio 4
+        </div>
+    </div>
+
+    <div class="main-container">
+        <section id="input-section">
+            <div class="input-group">
+                <h2>Ejercicio Disponible</h2>
+                <p><strong>Ejercicio 4:</strong> L = {x* y²ⁿ zᵐ zᵐ⁺² y³ⁿ | n≥1, m≥1}</p>
+                 <p class="simulation-message accepted" style="background-color: #e6f7ff; color: #005bb5; font-size: 0.85rem;">Cadenas Válidas de Prueba:
+                <br><code>yyzzzzzzyyy</code> (n=1, m=2)
+                <br><code>xyyyyzzzzzzyyyyyy</code> (n=2, m=2)
+                <br><code>yyzzzzzzzzyyy</code> (n=1, m=3)</p>
+            </div>
+
+            <div class="input-group">
+                <h2>Ingresa la cadena</h2>
+                <input type="text" id="exerciseInput" placeholder="Ejemplo: yyzzzzzzyyy">
+            </div>
+
+            <button id="generateBtn">Mostrar PDA / Simular</button>
+        </section>
+
+        <section id="output-section">
+            <h2>ID del Ejercicio</h2>
+            <input type="text" id="exerciseID" readonly placeholder="ID generado al simular" class="output-input">
+
+            <h2>Descripción Formal y Teórica</h2>
+            <textarea id="formalDescription" readonly rows="18" placeholder="Aquí aparecerá la séptupla, la ER, la GLC y la explicación de transiciones." class="output-textarea"></textarea>
+
+            <h2>Visualización del Autómata (Grafo Dinámico)</h2>
+            <div id="graph" style="height: 300px;"></div>
+
+            <h2>Simulación (Descripciones Instantáneas / ID)</h2>
+            <div id="simulationSteps" class="steps-box">
+                 <p>Ingresa una cadena y haz clic en "Mostrar PDA / Simular" para ver el proceso paso a paso.</p>
+            </div>
+        </section>
+    </div>
+
+
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const generateBtn = document.getElementById("generateBtn");
+
+        function generateID() {
+            return "PDA-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        }
+
+        // ------------------ DEFINICIÓN DEL PDA (Lógica 6n, 5 Estados) ------------------
+        const PDA = {
+            Q: "{q0, q1, q2, q3, qf}",
+            Sigma: "{x, y, z}",
+            Gamma: "{Z, Y}", 
+            
+            // Transiciones diseñadas para la relación 2n:3n usando la lógica de 6n total.
+            // Z es el marcador de fondo de pila. Y es el contador.
+            Delta: [
+                // 1. x* (q0)
+                "(q0, x, Z) -> (q0, Z)", // Consume x, mantiene Z
+                "(q0, x, Y) -> (q0, Y)", // Consume x, mantiene Y
+                // 2. y^(2n) - Apila 3Y por cada 'y' (Total 6n Y's)
+                "(q0, y, Z) -> (q1, YYYZ)", // Transición inicial (Pop Z, Push Y Y Y Z)
+                "(q1, y, Y) -> (q1, YYYY)", // Pop Y, Push Y Y Y Y (Aumento neto de 3Y)
+                // 3. z^(2m+2) - Consumir 'z' sin cambiar la pila (solo control de longitud/estado)
+                "(q1, z, Y) -> (q2, Y)", // q1 -> q2 (Inicio de z)
+                "(q2, z, Y) -> (q2, Y)", // Bucle en q2 (Continúa z)
+                "(q2, z, Z) -> (q2, Z)", // Bucle en q2 si Z es el tope (Para cadenas cortas de y^2n)
+                // 4. y^(3n) - Desapila 2Y por cada 'y' (Total 6n Y's desapiladas)
+                "(q2, y, Y) -> (q3, ε)", // q2 -> q3: Pop 1Y (Inicio 3n - 1ra Pop)
+                "(q3, y, Y) -> (q3, ε)", // Bucle q3: Pop 1Y (Cont. 3n - 1ra Pop)
+                "(q3, ε, Y) -> (q3, ε)", // **Lambda-Transition:** Pop la 2ª Y (Desapilamiento 2/2)
+                // 5. Aceptación
+                "(q3, ε, Z) -> (qf, ε)" // Acepta por pila vacía
+            ],
+
+            q0: "q0",
+            qf: "qf",
+            
+            transitionsMap: {
+                'q0,x,Z': { next_state: 'q0', pop: 'Z', push: 'Z', action: 'Mantiene Z (x*)', consumed: true },
+                'q0,x,Y': { next_state: 'q0', pop: 'Y', push: 'Y', action: 'Mantiene Y (x*)', consumed: true },
+                'q0,y,Z': { next_state: 'q1', pop: 'Z', push: 'YYYZ', action: 'Pop Z, Push Y Y Y Z (Inicio 2n)', consumed: true },
+                'q1,y,Y': { next_state: 'q1', pop: 'Y', push: 'YYYY', action: 'Pop Y, Push Y Y Y Y (Continúa 2n)', consumed: true },
+                
+                'q1,z,Y': { next_state: 'q2', pop: 'Y', push: 'Y', action: 'Pop Y, Push Y (Inicio z)', consumed: true },
+                'q2,z,Y': { next_state: 'q2', pop: 'Y', push: 'Y', action: 'Mantiene Y (Contando z)', consumed: true },
+                'q2,z,Z': { next_state: 'q2', pop: 'Z', push: 'Z', action: 'Mantiene Z (Contando z)', consumed: true },
+                
+                'q2,y,Y': { next_state: 'q3', pop: 'Y', push: 'ε', action: 'Pop Y (Inicio 3n - 1ra Pop)', consumed: true },
+                'q3,y,Y': { next_state: 'q3', pop: 'Y', push: 'ε', action: 'Pop Y (Cont. 3n - 1ra Pop)', consumed: true },
+                
+                'q3,ε,Y': { next_state: 'q3', pop: 'Y', push: 'ε', action: 'Pop Y (λ-Transition: 2da Pop)', consumed: false },
+                
+                'q3,ε,Z': { next_state: 'qf', pop: 'Z', push: 'ε', action: 'Pop Z (Aceptación)', consumed: false }
+            },
+
+            // ------------------ FUNCIÓN DE SIMULACIÓN CORREGIDA ------------------
+            simulate(input) {
+                const detailedSteps = [];
+                let stepId = 0;
+                let state = "q0";
+                let current_stack = ["Z"];
+                let input_index = 0;
+                let accepted = false;
+                let n=0, m=0;
+
+                detailedSteps.push({
+                    id: stepId++, state: "q0", remaining: input || "ε", stack: "Z",
+                    read: "Inicial", transition: "N/A", action: "Pila inicial Z"
+                });
+
+                // --- VALIDACIÓN LÓGICA PREVIA (Check for n>=1, m>=2, and ratio) ---
+                const match = input.match(/^(x*)(y+)(z+)(y+)$/);
+                let final_accepted_logic = false;
+                
+                if (match) {
+                    const [_, xPart, y1, zTotal, y2] = match;
+                    const Ly1 = y1.length; // 2n
+                    const Lz = zTotal.length; // 2m+2
+                    const Ly2 = y2.length; // 3n
+                    
+                    n = (Ly1 >= 2 && Ly1 % 2 === 0) ? Ly1 / 2 : 0;
+                    
+                    // CORRECCIÓN CRUCIAL: Mínimo Lz es 6 (para m=2), y el resto (Lz - 2) debe ser par (2m).
+                    m = (Lz >= 6 && (Lz - 2) % 2 === 0) ? (Lz - 2) / 2 : 0;
+                    
+                    // La condición final debe ser n>=1 y m>=2.
+                    final_accepted_logic = (n >= 1 && m >= 2 && Ly2 === 3 * n);
+                }
+                
+                // 2. Bucle Principal de Simulación
+                let max_steps = 3 * input.length + 5;
+                let current_step = 0;
+                
+                while (current_step < max_steps && state !== 'qf' && input_index <= input.length) {
+                    current_step++;
+                    
+                    const char = input[input_index] || 'ε';
+                    const stackTop = current_stack[current_stack.length - 1];
+                    
+                    let next_step = null;
+                    let consumed_input = false;
+                    
+                    // 1. Intentar con el caracter de entrada
+                    let key = `${state},${char},${stackTop}`;
+                    next_step = PDA.transitionsMap[key];
+                    if (next_step) {
+                        consumed_input = (char !== 'ε');
+                    } else {
+                        // 2. Intentar con épsilon (sin consumir entrada)
+                        const epsilon_key = `${state},ε,${stackTop}`;
+                        next_step = PDA.transitionsMap[epsilon_key];
+                        if (next_step) {
+                             consumed_input = false;
+                        }
+                    }
+
+                    if (!next_step) {
+                        break; 
+                    }
+                    
+                    // 3b. Registro y Manipulación de Pila
+                    // *** CAMBIO REALIZADO: Mostrar la pila como concatenación de símbolos (ej. YYYZ) ***
+                    const prev_stack_str = current_stack.join('');
+                    const transition_char = consumed_input ? char : 'ε';
+                    const current_transition_rule = `(${state}, ${transition_char.replace(/ε/g, 'λ')}, ${stackTop}) -> (${next_step.next_state}, ${next_step.push.replace(/ε/g, 'λ')})`;
+                    
+                    
+                    // Pop
+                    if (next_step.pop !== 'ε' && current_stack.length > 0) {
+                        current_stack.pop();
+                    } else if (next_step.pop !== 'ε' && current_stack.length === 0) {
+                        break; 
+                    }
+
+                    // Push (El primer símbolo de la cadena de push queda en el tope de la pila)
+                    const push_string = next_step.push.split('');
+                    for (let i = push_string.length - 1; i >= 0; i--) {
+                         if (push_string[i] !== 'ε') {
+                            current_stack.push(push_string[i]);
+                        }
+                    }
+                    
+                    // Registro del paso antes de actualizar estado
+                    detailedSteps.push({
+                        id: stepId++, state: state, remaining: input.slice(input_index) || 'ε', stack: prev_stack_str,
+                        read: transition_char.replace(/ε/g, 'λ'), transition: current_transition_rule, action: next_step.action
+                    });
+
+                    // 3c. Actualización de Estado y Posición de Lectura
+                    state = next_step.next_state;
+                    if (consumed_input) {
+                        input_index++;
+                    }
+                }
+
+                // 4. Paso Final y Verificación de Aceptación
+                // *** CAMBIO REALIZADO: Mostrar la pila como concatenación de símbolos (ej. YYYZ) ***
+                const final_stack_str = current_stack.join('') || 'ε';
+                
+                accepted = (state === 'qf' && input_index === input.length && current_stack.length === 0 && final_accepted_logic);
+                
+                detailedSteps.push({
+                    id: stepId++, state: state, remaining: input.slice(input_index) || 'ε', stack: final_stack_str,
+                    read: accepted ? "Aceptación" : "Rechazo", transition: "FINAL", action: accepted ? "Cadena aceptada por pila vacía" : "Condiciones de aceptación fallidas"
+                });
+
+                const acceptanceMessage = accepted
+                    ? `✅ Cadena ACEPTADA (Cumple x* y^{2n} z^{2m+2} y^{3n} con n=${n} y m=${m}).`
+                    : "❌ Cadena RECHAZADA (La simulación finaliza incorrectamente o la condición lógica (n≥1, m≥2) falla).";
+
+                return { detailedSteps, acceptanceMessage, accepted };
+            },
+
+            // ------------------ DESCRIPCIONES FORMALES ------------------
+            getDescription: function() {
+                const deltaExplanation = `
+*DESCRIPCIÓN DE FUNCIONAMIENTO (Lógica 6n)*
+
+El PDA garantiza la relación 2n:3n apilando 3 símbolos 'Y' por cada 'y' en la primera fase (Total 6n) y desapilando 2 símbolos 'Y' por cada 'y' en la última fase.
+
+1.  ESTADO q0 (x*): Consume 'x' sin alterar la pila.
+2.  ESTADO q1 (y²ⁿ - Apilamiento de 3Y): Por cada 'y' leída, se logra un aumento neto de 3 'Y' en la pila (Total 6n Y's apiladas).
+3.  ESTADO q2 (z²ᵐ⁺²): Consume 'z' sin afectar la pila (mantiene o reemplaza el tope con el mismo). Esto asegura que cualquier cadena z^k con k >= 6 (m>=2) sea consumida.
+4.  ESTADO q3 (y³ⁿ - Desapilamiento de 2Y): Por cada 'y' leída, se desapilan 2 'Y' (una normal y una por transición λ), agotando los 6n 'Y's justo al final de la cadena.
+5.  ESTADO qf (Aceptación): Si la cadena termina (λ) y la pila es solo 'Z', la vacía y acepta.
+
+* TRANSICIONES (δ) *
+` + this.Delta.map(t => t.replace(/ε/g, 'λ')).join("\n") + `
+
+* EXPRESIÓN REGULAR (ER) *
+R = x* (yy)⁺ (z z z z z z) (z z)* (yyy)⁺
+
+*** GRAMÁTICA LIBRE DE CONTEXTO (GLC) ***
+S → xS | A
+A → y y A y y y | B                  // Controla n: 2n vs 3n
+B → z z B z z | z z z z z z C        // Controla m: (zz)⁺ z⁶ (Mínimo z^6 para m=2)
+C → λ
+`;
+                
+                return `📌 SÉPTUPLA DEL PDA:
+PDA = (${ this.Q }, ${ this.Sigma }, ${ this.Gamma }, δ, ${ this.q0 }, Z, ${ this.qf })
+Q: ${ this.Q }
+Σ: ${ this.Sigma }
+Γ: ${ this.Gamma }
+q₀: ${ this.q0 }
+Z: Z
+qf: ${ this.qf } (Por Pila Vacía)
+` + deltaExplanation;
+            }
+        };
+
+        function drawGraph(transitions, startState, finalState, accepted) {
+            const container = document.getElementById("graph");
+            const nodes = new Map();
+            const edges = [];
+            const regex = /\(([A-Za-z0-9_]+),\s*(.*?),\s*(.*?)\)\s*->\s*\(([A-Za-z0-9_]+),\s*(.*?)\)/g;
+
+            transitions.forEach(t => {
+                let m;
+                while ((m = regex.exec(t)) !== null) {
+                    const from = m[1], input = m[2].replace('ε', 'λ'), stackTop = m[3], to = m[4], push = m[5].replace('ε', 'λ');
+                    
+                    if (!nodes.has(from)) nodes.set(from, { id: from, label: from });
+                    if (!nodes.has(to)) nodes.set(to, { id: to, label: to });
+                    
+                    edges.push({
+                        from, to, label: `${input}, ${stackTop}→${push}`
+                    });
+                }
+            });
+
+            const styledNodes = Array.from(nodes.values()).map(n => {
+                const style = {
+                    id: n.id, label: n.label, shape: "circle", color: "#0078d7",
+                    font: { color: "white" }, borderWidth: 2
+                };
+                if (n.id === startState) style.color = "#34c759";
+                if (n.id === finalState) {
+                    style.shape = "doublecircle";
+                    style.borderWidth = 4;
+                    style.color = accepted ? "#34c759" : "#ff3b30";
+                }
+                return style;
+            });
+
+            const data = { nodes: styledNodes, edges };
+            const options = {
+                edges: { arrows: "to", color: { color: "#333" }, font: { align: "horizontal" } },
+                physics: { enabled: true, stabilization: true },
+                layout: { hierarchical: { enabled: true, direction: "LR", sortMethod: "directed" } }
+            };
+            container.innerHTML = "";
+            new vis.Network(container, data, options);
+        }
+
+        // ------------------ EVENTO DEL BOTÓN ------------------
+        generateBtn.addEventListener("click", () => {
+            const input = document.getElementById("exerciseInput").value.trim().replace(/\s/g, '');
+            const idInput = document.getElementById("exerciseID");
+            const outputArea = document.getElementById("formalDescription");
+            const stepsDiv = document.getElementById("simulationSteps");
+
+            if (!input) {
+                alert("Por favor ingresa una cadena para evaluar.");
+                return;
+            }
+
+            idInput.value = generateID();
+
+            const simulationResult = PDA.simulate(input);
+            const { detailedSteps, acceptanceMessage, accepted } = simulationResult;
+
+            // 1. Mostrar el Grafo
+            drawGraph(PDA.Delta, PDA.q0, PDA.qf, accepted);
+
+            // 2. Mostrar la Descripción Formal
+            outputArea.value = PDA.getDescription(); 
+
+            // 3. Mostrar la Simulación (Tabla de ID)
+            let tableHTML = `
+                <h3>📘 ID y Pasos de la Simulación:</h3>
+                <p>La simulación muestra las <strong>Descripciones Instantáneas (ID)</strong> y el funcionamiento de la pila.</p>
+                <table class="simulation-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ID (Estado, Cadena Restante, Pila)</th>
+                            <th>Símbolo Leído</th>
+                            <th>Transición δ</th>
+                            <th>Pila (Acción)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            detailedSteps.forEach(step => {
+                const id_format = `(${step.state}, ${step.remaining.replace(/ε/g, 'λ')}, ${step.stack.replace(/ε/g, 'λ')})`;
+                tableHTML += `
+                    <tr>
+                        <td>${step.id}</td>
+                        <td style="font-family: monospace;">${id_format}</td>
+                        <td>${step.read.replace('ε', 'λ')}</td>
+                        <td style="font-family: monospace;">${step.transition.replace(/ε/g, 'λ')}</td>
+                        <td>${step.action}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += "</tbody></table>";
+
+            const messageClass = accepted ? "accepted" : "rejected";
+            tableHTML += `<div class="simulation-message ${messageClass}">${acceptanceMessage}</div>`;
+
+            stepsDiv.innerHTML = tableHTML;
+        });
+    });
+    </script>
+
+</body>
+</html>
