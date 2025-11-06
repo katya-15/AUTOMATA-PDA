@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de PDA para L</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1e88e5;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    main {
+      max-width: 1000px;
+      margin: 1.5rem auto 2rem;
+      padding: 1.5rem;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.1);
+    }
+    h2 { margin-top: 0; }
+
+    .bloque {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 6px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+    }
+
+    .ejercicio {
+      background: #e3f2fd;
+      border-color: #90caf9;
+    }
+
+    pre {
+      background: #263238;
+      color: #eceff1;
+      padding: .75rem 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: .9rem;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: .25rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: .6rem .8rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: .6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      background: #1e88e5;
+      color: white;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+
+    .resultado {
+      margin-top: 1rem;
+      padding: .8rem 1rem;
+      border-radius: 4px;
+      display: none;
+      font-weight: bold;
+    }
+    .aceptada {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #81c784;
+    }
+    .rechazada {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+
+    .detalle {
+      margin-top: .4rem;
+      font-size: .9rem;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: .9rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: .35rem .45rem;
+      text-align: left;
+    }
+    th {
+      background: #eeeeee;
+    }
+    .config {
+      font-family: "Courier New", monospace;
+      font-size: .85rem;
+    }
+    .nota {
+      font-size: .9rem;
+      color: #555;
+      margin-top: .3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Simulador de Autómata de Pila para el lenguaje L
+</header>
+
+<main>
+  <!-- Descripción del lenguaje -->
+  <section class="bloque ejercicio">
+    <h2>Lenguaje L</h2>
+    <p>
+      L = { x<sup>*</sup> y<sup>2n</sup> z<sup>m</sup> z<sup>m+2</sup> y<sup>3n</sup> &nbsp;|&nbsp; n ≥ 1, m ≥ 1 }<br>
+      ⇔ L = { x<sup>*</sup> y<sup>2n</sup> z<sup>2m+2</sup> y<sup>3n</sup> }.
+    </p>
+    <p class="nota">
+      Este lenguaje no es regular (la cantidad de <code>y</code> del final depende de la cantidad de
+      <code>y</code> del principio), por lo tanto <strong>no existe una expresión regular formal</strong>.
+    </p>
+  </section>
+
+  <!-- GLC -->
+  <section class="bloque">
+    <h2>Gramática Libre de Contexto</h2>
+    <p><strong>Terminales:</strong> Σ = { x, y, z }</p>
+    <p><strong>No terminales:</strong> V = { S, X, N, Z } &nbsp;&nbsp;&nbsp; <strong>Inicial:</strong> S</p>
+    <pre>
+S → X N
+X → x X | ε
+N → y y N y y y | y y Z y y y
+Z → z z z z | z Z z
+    </pre>
+  </section>
+
+  <!-- PDA -->
+  <section class="bloque">
+    <h2>PDA asociado (sextupla)</h2>
+    <p>
+      M = (Q, Σ, Γ, δ, q<sub>0</sub>, Z<sub>0</sub>, F)
+    </p>
+    <ul>
+      <li>Q = { q }</li>
+      <li>Σ = { x, y, z }</li>
+      <li>Γ = { S, X, N, Z, x, y, z }</li>
+      <li>q<sub>0</sub> = q</li>
+      <li>Z<sub>0</sub> = S</li>
+      <li>F = ∅ (acepta por pila vacía)</li>
+    </ul>
+
+    <p><strong>Transiciones δ usadas en la simulación:</strong></p>
+    <pre>
+1) Producciones de la GLC (ε-movimientos):
+   δ(q, ε, S) = (q, XN)
+
+   δ(q, ε, X) = (q, xX)   |   (q, ε)
+
+   δ(q, ε, N) = (q, yyNyyy)   |   (q, yyZyyy)
+
+   δ(q, ε, Z) = (q, zzzz)     |   (q, zZz)
+
+2) Lectura de terminales:
+   δ(q, x, x) = (q, ε)
+   δ(q, y, y) = (q, ε)
+   δ(q, z, z) = (q, ε)
+    </pre>
+  </section>
+
+  <!-- Simulador -->
+  <section class="bloque">
+    <h2>Simulación del PDA</h2>
+
+    <label for="cadena">Ingresa una cadena (solo con símbolos x, y, z):</label>
+    <input type="text" id="cadena" placeholder="Ejemplo: xxyyzzzzyyyyyy" />
+
+    <button id="btnProbar">Probar cadena</button>
+
+    <div id="resultado" class="resultado">
+      <span id="mensaje"></span>
+      <div id="detalle" class="detalle"></div>
+    </div>
+
+    <div id="pasos-container" style="margin-top:1rem; display:none;">
+      <h3>Pasos de simulación (una trayectoria)</h3>
+      <div class="nota">
+        Configuración escrita como (estado, entrada_restante, pila). La cima de la pila
+        es el <strong>último</strong> símbolo mostrado.
+      </div>
+      <table id="tabla-pasos">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Configuración antes</th>
+            <th>Transición δ aplicada</th>
+            <th>Configuración después</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas generadas por JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ==========================
+  // Definición del PDA
+  // ==========================
+  const variables = ["S", "X", "N", "Z"];
+
+  // Epsilon-transiciones según la GLC
+  const epsilonTransitions = {
+    "S": [
+      { pop: "S", push: "XN", desc: "δ(q, ε, S) = (q, XN)" }
+    ],
+    "X": [
+      { pop: "X", push: "xX", desc: "δ(q, ε, X) = (q, xX)" },
+      { pop: "X", push: "",  desc: "δ(q, ε, X) = (q, ε)" }
+    ],
+    "N": [
+      { pop: "N", push: "yyNyyy", desc: "δ(q, ε, N) = (q, yyNyyy)" },
+      { pop: "N", push: "yyZyyy", desc: "δ(q, ε, N) = (q, yyZyyy)" }
+    ],
+    "Z": [
+      { pop: "Z", push: "zzzz", desc: "δ(q, ε, Z) = (q, zzzz)" },
+      { pop: "Z", push: "zZz",  desc: "δ(q, ε, Z) = (q, zZz)" }
+    ]
+  };
+
+  // ==========================
+  // Simulación NO determinista (BFS)
+  // ==========================
+  function simulatePDA(input) {
+    input = input.trim();
+    const maxSteps = 5000;
+
+    // configuración inicial
+    const initial = {
+      state: "q",
+      index: 0,
+      stack: ["S"],
+      history: []
+    };
+
+    let queue = [initial];
+    let stepsCounter = 0;
+    let lastHistory = initial.history;
+
+    while (queue.length > 0 && stepsCounter < maxSteps) {
+      const cfg = queue.shift();
+      stepsCounter++;
+
+      const { state, index, stack, history } = cfg;
+      lastHistory = history;
+
+      // aceptación por pila vacía al terminar la entrada
+      if (index === input.length && stack.length === 0) {
+        return { accepted: true, history };
+      }
+
+      if (stack.length === 0) {
+        // sin pila y entrada restante -> no hay movimientos
+        continue;
+      }
+
+      const top = stack[stack.length - 1];
+      const remaining = input.slice(index);
+
+      // 1) Transiciones de lectura de terminales
+      if (index < input.length && (top === "x" || top === "y" || top === "z")) {
+        const currentSymbol = input[index];
+        if (top === currentSymbol) {
+          const newStack = stack.slice(0, -1); // pop
+          const newIndex = index + 1;
+          const newHistory = history.concat([{
+            step: history.length + 1,
+            fromState: state,
+            fromInput: remaining,
+            fromStack: showStack(stack),
+            transition: `δ(q, ${currentSymbol}, ${currentSymbol}) = (q, ε)`,
+            toState: state,
+            toInput: input.slice(newIndex),
+            toStack: showStack(newStack)
+          }]);
+          queue.push({
+            state,
+            index: newIndex,
+            stack: newStack,
+            history: newHistory
+          });
+        }
+      }
+
+      // 2) ε-transiciones para variables de la pila
+      if (variables.includes(top)) {
+        const transList = epsilonTransitions[top] || [];
+        for (const tr of transList) {
+          const newStack = stack.slice(0, -1); // pop top
+          // Empujar los símbolos de "push" de izquierda a derecha,
+          // de modo que el último quede en la cima.
+          for (let i = 0; i < tr.push.length; i++) {
+            newStack.push(tr.push[i]);
+          }
+
+          const newHistory = history.concat([{
+            step: history.length + 1,
+            fromState: state,
+            fromInput: remaining,
+            fromStack: showStack(stack),
+            transition: tr.desc,
+            toState: state,
+            toInput: remaining,
+            toStack: showStack(newStack)
+          }]);
+
+          queue.push({
+            state,
+            index,
+            stack: newStack,
+            history: newHistory
+          });
+        }
+      }
+    }
+
+    // Si se agotan las configuraciones sin aceptar
+    return { accepted: false, history: lastHistory, truncated: stepsCounter >= maxSteps };
+  }
+
+  function showStack(stackArray) {
+    if (!stackArray || stackArray.length === 0) return "ε";
+    return stackArray.join("");
+  }
+
+  // ==========================
+  // Interfaz
+  // ==========================
+  document.getElementById("btnProbar").addEventListener("click", function () {
+    const cadenaInput = document.getElementById("cadena").value.trim();
+    const resultadoDiv = document.getElementById("resultado");
+    const mensajeSpan = document.getElementById("mensaje");
+    const detalleDiv = document.getElementById("detalle");
+    const pasosContainer = document.getElementById("pasos-container");
+    const tablaBody = document.querySelector("#tabla-pasos tbody");
+
+    // limpiar tabla
+    tablaBody.innerHTML = "";
+    pasosContainer.style.display = "none";
+
+    if (cadenaInput === "") {
+      resultadoDiv.style.display = "block";
+      resultadoDiv.className = "resultado rechazada";
+      mensajeSpan.textContent = "Ingresa una cadena primero.";
+      detalleDiv.textContent = "";
+      return;
+    }
+
+    if (!/^[xyz]+$/.test(cadenaInput)) {
+      resultadoDiv.style.display = "block";
+      resultadoDiv.className = "resultado rechazada";
+      mensajeSpan.textContent = "Cadena RECHAZADA (símbolos inválidos).";
+      detalleDiv.textContent = "Solo se permiten símbolos x, y y z.";
+      return;
+    }
+
+    const sim = simulatePDA(cadenaInput);
+
+    resultadoDiv.style.display = "block";
+
+    if (sim.accepted) {
+      resultadoDiv.className = "resultado aceptada";
+      mensajeSpan.textContent = "✔ Cadena ACEPTADA por el PDA.";
+      detalleDiv.textContent = "Se encontró una secuencia de transiciones que consume toda la entrada y deja la pila vacía.";
+    } else {
+      resultadoDiv.className = "resultado rechazada";
+      mensajeSpan.textContent = "✘ Cadena RECHAZADA por el PDA.";
+      if (sim.truncated) {
+        detalleDiv.textContent = "No se encontró una derivación aceptada en el número máximo de pasos permitidos.";
+      } else {
+        detalleDiv.textContent = "No existe una trayectoria que consuma toda la entrada y deje la pila vacía.";
+      }
+    }
+
+    // Mostrar pasos de simulación (una trayectoria)
+    if (sim.history && sim.history.length > 0) {
+      pasosContainer.style.display = "block";
+      for (const h of sim.history) {
+        const tr = document.createElement("tr");
+
+        const tdPaso = document.createElement("td");
+        tdPaso.textContent = h.step;
+
+        const tdConfigAntes = document.createElement("td");
+        tdConfigAntes.innerHTML = `<span class="config">(q, ${h.fromInput || "ε"}, ${h.fromStack})</span>`;
+
+        const tdTrans = document.createElement("td");
+        tdTrans.textContent = h.transition;
+
+        const tdConfigDespues = document.createElement("td");
+        tdConfigDespues.innerHTML = `<span class="config">(q, ${h.toInput || "ε"}, ${h.toStack})</span>`;
+
+        tr.appendChild(tdPaso);
+        tr.appendChild(tdConfigAntes);
+        tr.appendChild(tdTrans);
+        tr.appendChild(tdConfigDespues);
+
+        tablaBody.appendChild(tr);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
