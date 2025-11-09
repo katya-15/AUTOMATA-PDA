@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDA — Lenguaje L = { x* y^{2n} z^m z^{m+2} y^{3n} }</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #0b1120;
+      color: #e5e7eb;
+    }
+    header {
+      text-align: center;
+      padding: 16px 8px;
+      background: #020617;
+      border-bottom: 1px solid #1e293b;
+    }
+    header h1 {
+      margin: 2px 0;
+      font-size: 1.2rem;
+      color: #f97316;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    header h2 {
+      margin: 2px 0;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+    header h3 {
+      margin: 4px 0;
+      font-size: 1rem;
+      color: #22c55e;
+    }
+    header p {
+      margin: 2px 0;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    main {
+      padding: 16px;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #020617;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #1e293b;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      margin-bottom: 12px;
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      color: #38bdf8;
+    }
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+    }
+    input[type="text"]::placeholder {
+      color: #6b7280;
+    }
+    .botones {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f9fafb;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      box-shadow: 0 8px 18px rgba(22,163,74,0.5);
+    }
+    button.segundo {
+      background: linear-gradient(90deg, #0ea5e9, #6366f1);
+      box-shadow: 0 8px 18px rgba(59,130,246,0.45);
+    }
+    button:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+    .velocidad {
+      margin-top: 4px;
+      font-size: 0.85rem;
+      color: #cbd5f5;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .velocidad label {
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 0;
+    }
+    .resultado {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .aceptada {
+      display: block;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid #22c55e;
+      color: #bbf7d0;
+    }
+    .rechazada {
+      display: block;
+      background: rgba(248,113,113,0.08);
+      border: 1px solid #f97373;
+      color: #fecaca;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+    thead {
+      background: #020617;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    th, td {
+      border: 1px solid #1f2937;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    th {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+    tbody {
+      background: #020617;
+    }
+    .tabla-contenedor {
+      max-height: 260px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      margin-top: 6px;
+    }
+
+    .lista-di {
+      margin-top: 10px;
+      max-height: 260px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      padding: 8px;
+      font-size: 0.82rem;
+      background: #020617;
+    }
+    .lista-di li {
+      margin-bottom: 4px;
+    }
+
+    code {
+      background: #020617;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    pre {
+      background: #020617;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .small {
+      font-size: 0.85rem;
+    }
+    .footer-info h4 {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+    .footer-info p {
+      margin: 2px 0;
+      font-size: 0.85rem;
+    }
+    a {
+      color: #38bdf8;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>UNIVERSIDAD MARIANO GALVEZ</h1>
+  <h2>AUTÓMATAS Y LENGUAJES FORMALES - SEXTO SEMESTRE - INGENIERÍA EN SISTEMAS</h2>
+  <h3>
+    PDA — Lenguaje L = { x* y<sup>2n</sup> z<sup>m</sup> z<sup>m+2</sup> y<sup>3n</sup> | n ≥ 1, m ≥ 2 }
+  </h3>
+</header>
+
+<main>
+  <div class="grid">
+    <!-- IZQUIERDA: SIMULADOR + DIAGRAMA + DESCRIPCIÓN FORMAL -->
+    <section>
+      <div class="card">
+        <h3>Ingrese cadena (x,y,z)</h3>
+        <p class="small">
+          El alfabeto es Σ = {x, y, z}. El PDA comprobará si la cadena pertenece al
+          lenguaje <code>x* y^{2n} z^{m} z^{m+2} y^{3n}</code>.
+        </p>
+
+        <label for="cadena">Cadena a evaluar:</label>
+        <input id="cadena" type="text" placeholder="Ejemplo: xxyyzzzzzzyyyyyyyyy" />
+
+        <div class="botones">
+          <button id="btnComprobar">Comprobar</button>
+          <button id="btnEjemplo" class="segundo">Cargar ejemplo</button>
+          <div class="velocidad">
+            <span>Velocidad:</span>
+            <label><input type="radio" name="velocidad" value="lenta"> Lenta</label>
+            <label><input type="radio" name="velocidad" value="normal" checked> Normal</label>
+            <label><input type="radio" name="velocidad" value="rapida"> Rápida</label>
+          </div>
+        </div>
+
+        <div id="mensajeResultado" class="resultado"></div>
+      </div>
+
+      <!-- Diagrama del PDA (texto) -->
+      <div class="card">
+        <h3>Diagrama del PDA (esquema)</h3>
+        <p class="small">
+          Estados: <code>q0, q1, q2, q3, q4</code> — Símbolos de pila: <code>Z0, A</code>
+        </p>
+        <pre>
+q0 --x, λ; λ--> q0         (ignora x)
+q0/q1 --yy, λ; A--> q1     (primer bloque de y: por cada 'yy' apila A)
+q1 --z, λ; λ--> q2         (entra al bloque de z)
+q2 --z, λ; λ--> q2         (recorre todas las z, controlando que sean ≥ 6 y par)
+q2/q3 --yyy, A; λ--> q3    (bloque final de y: por cada 'yyy' desapila A)
+q3 --ε, Z0; Z0--> q4       (si la entrada termina y pila=Z0, acepta)
+        </pre>
+      </div>
+
+      <!-- Descripción formal (resumen) -->
+      <div class="card">
+        <h3>Descripción formal (resumen)</h3>
+        <pre>
+M = (Q, Σ, Γ, δ, q0, Z0, F)
+
+Q  = {q0, q1, q2, q3, q4}
+Σ  = {x, y, z}
+Γ  = {Z0, A}
+q0 = estado inicial
+Z0 = símbolo inicial de la pila
+F  = {q4}
+        </pre>
+        <p class="small">
+          Intuición del funcionamiento:
+        </p>
+        <ul class="small">
+          <li>En <code>q0</code> se leen todas las <code>x</code> (no afectan la pila).</li>
+          <li>En <code>q1</code> se lee el primer bloque de <code>y</code> en pares <code>yy</code>
+              y por cada par se apila un <code>A</code>, garantizando el <code>2n</code>.</li>
+          <li>En <code>q2</code> se recorre el bloque de <code>z</code>, que debe tener longitud par y ≥ 6
+              (equivalente a <code>z^m z^{m+2}</code>).</li>
+          <li>En <code>q3</code> se lee el bloque final de <code>y</code> en triples <code>yyy</code>;
+              por cada triple se desapila un <code>A</code>, garantizando el <code>3n</code>.</li>
+          <li>Si la entrada termina y la pila queda en <code>Z0</code>, se pasa a <code>q4</code> y la
+              cadena es aceptada.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DERECHA: TABLA DE PASOS + DESCRIPCIÓN INSTANTÁNEA -->
+    <section>
+      <div class="card">
+        <h3>Tabla de pasos</h3>
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Paso</th>
+                <th>Símbolo</th>
+                <th>Estado</th>
+                <th>Tope pila</th>
+                <th>Acción</th>
+                <th>Nuevo estado</th>
+                <th>Pila</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPasos">
+              <!-- Llenado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Descripción instantánea (lista)</h3>
+        <ul id="listaDI" class="lista-di">
+          <!-- Llenado dinámico -->
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- SECCIÓN FINAL: INFO DEL SIMULADOR, NOMBRE, CARNET, ARCHIVOS -->
+  <section class="card footer-info">
+    <h3>Simulador PDA — Universidad Mariano Galvez</h3>
+    <p class="small">
+      Este simulador fue desarrollado para ilustrar el comportamiento de un autómata de pila
+      para el lenguaje:
+      <code>L = { x* y^{2n} z^{m} z^{m+2} y^{3n} | n ≥ 1, m ≥ 2 }</code>.
+    </p>
+
+    <h4>NOMBRE:</h4>
+    <p>Escribe aquí tu nombre (por ejemplo: RAÚL BOTZOC).</p>
+
+    <h4>CARNET:</h4>
+    <p>Escribe aquí tu carnet (por ejemplo: 0902-XX-XXXXX).</p>
+
+    <h4>ARCHIVOS DEL PROYECTO:</h4>
+    <p class="small">
+      Puedes agregar enlaces a tu código fuente o documentación, por ejemplo:
+    </p>
+    <ul class="small">
+      <li><a href="#" target="_blank">Repositorio en GitHub</a></li>
+      <li><a href="#" target="_blank">Documento PDF del informe</a></li>
+    </ul>
+  </section>
+</main>
+
+<script>
+  const inputCadena   = document.getElementById("cadena");
+  const btnComprobar  = document.getElementById("btnComprobar");
+  const btnEjemplo    = document.getElementById("btnEjemplo");
+  const msgResultado  = document.getElementById("mensajeResultado");
+  const tablaPasos    = document.getElementById("tablaPasos");
+  const listaDI       = document.getElementById("listaDI");
+  const radiosVel     = document.querySelectorAll("input[name='velocidad']");
+
+  let animTimer = null;
+
+  function obtenerVelocidadMs() {
+    let val = "normal";
+    radiosVel.forEach(r => {
+      if (r.checked) val = r.value;
+    });
+    if (val === "lenta") return 800;
+    if (val === "rapida") return 150;
+    return 400; // normal
+  }
+
+  function mostrarResultado(aceptada, motivo) {
+    msgResultado.textContent = motivo;
+    msgResultado.className = "resultado " + (aceptada ? "aceptada" : "rechazada");
+  }
+
+  function limpiarSalidas() {
+    if (animTimer) {
+      clearInterval(animTimer);
+      animTimer = null;
+    }
+    tablaPasos.innerHTML = "";
+    listaDI.innerHTML = "";
+  }
+
+  function iniciarAnimacion(steps) {
+    limpiarSalidas();
+    const delay = obtenerVelocidadMs();
+    let i = 0;
+    animTimer = setInterval(() => {
+      if (i >= steps.length) {
+        clearInterval(animTimer);
+        animTimer = null;
+        return;
+      }
+      const s = steps[i];
+
+      // Fila en la tabla de pasos
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${s.paso}</td>
+        <td><code>${s.simbolo}</code></td>
+        <td>${s.estadoAntes}</td>
+        <td><code>${s.topeAntes}</code></td>
+        <td style="text-align:left;">${s.accion}</td>
+        <td>${s.estadoDespues}</td>
+        <td><code>${s.pilaDespues}</code></td>
+      `;
+      tablaPasos.appendChild(tr);
+
+      // Descripción instantánea
+      const li = document.createElement("li");
+      li.innerHTML = `
+        Paso ${s.paso}: ⟨${s.estadoDespues}, ${
+          s.resto === "" ? "ε" : s.resto
+        }, ${s.pilaDespues}⟩
+      `;
+      listaDI.appendChild(li);
+
+      i++;
+    }, delay);
+  }
+
+  // LÓGICA DEL PDA (misma idea que la página original, pero código escrito desde cero)
+  function simularCadena(cadena) {
+    const steps = [];
+    let pasoNum = 1;
+
+    let state = "q0";
+    let stack = ["Z0"]; // pila
+    let i = 0;
+    const nCadena = cadena.length;
+
+    function registrarPaso(simbolo, estadoAntes, estadoDespues, pilaAntesArr, pilaDespuesArr, accion, idxDespues) {
+      const pilaAntes = pilaAntesArr.join("");
+      const pilaDespues = pilaDespuesArr.join("");
+      const topeAntes = pilaAntesArr[pilaAntesArr.length - 1] || "∅";
+      const resto = cadena.slice(idxDespues);
+      steps.push({
+        paso: pasoNum++,
+        simbolo: simbolo === "" ? "ε" : simbolo,
+        estadoAntes,
+        estadoDespues,
+        topeAntes,
+        accion,
+        pilaDespues,
+        resto
+      });
+    }
+
+    // Paso inicial
+    registrarPaso(
+      "",
+      state,
+      state,
+      stack.slice(),
+      stack.slice(),
+      "Configuración inicial: estado q0, pila con Z0.",
+      0
+    );
+
+    // 1) Prefijo x* en q0
+    while (i < nCadena && cadena[i] === "x") {
+      const estadoAntes = state;
+      const pilaAntes = stack.slice();
+      const accion = "Leer 'x' (prefijo libre), permanecer en q0.";
+      registrarPaso("x", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+      i++;
+    }
+
+    // 2) Primer bloque de y: y^{2n} con n ≥ 1 (pares "yy")
+    if (i >= nCadena || cadena[i] !== "y") {
+      return {
+        aceptada: false,
+        motivo: "Después del prefijo de 'x' debe venir al menos un par 'yy' para el primer bloque de y.",
+        steps
+      };
+    }
+
+    let n = 0; // parejas de 'y'
+    while (i < nCadena && cadena[i] === "y") {
+      if (i + 1 >= nCadena || cadena[i + 1] !== "y") {
+        return {
+          aceptada: false,
+          motivo: "El primer bloque de 'y' debe tener longitud par (2n).",
+          steps
+        };
+      }
+
+      const estadoAntes = state;
+      const pilaAntes = stack.slice();
+      if (state === "q0") state = "q1";
+      stack.push("A");
+      const pilaDespues = stack.slice();
+      const accion = "Leer 'yy' en el primer bloque de y y apilar 'A'.";
+      registrarPaso("yy", estadoAntes, state, pilaAntes, pilaDespues, accion, i + 2);
+
+      i += 2;
+      n++;
+    }
+
+    if (n < 1) {
+      return {
+        aceptada: false,
+        motivo: "Debe haber al menos un par 'yy' en el primer bloque (n ≥ 1).",
+        steps
+      };
+    }
+
+    // 3) Bloque de z (z^m z^{m+2}) => longitud total 2m+2, par y ≥ 6
+    if (i >= nCadena || cadena[i] !== "z") {
+      return {
+        aceptada: false,
+        motivo: "Después del primer bloque de 'y' debe venir un bloque de 'z'.",
+        steps
+      };
+    }
+
+    let zCount = 0;
+    while (i < nCadena && cadena[i] === "z") {
+      const estadoAntes = state;
+      const pilaAntes = stack.slice();
+
+      state = "q2";
+      const accion = "Leer 'z' en el bloque central (no modifica la pila).";
+      registrarPaso("z", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+
+      i++;
+      zCount++;
+    }
+
+    if (zCount < 6 || zCount % 2 !== 0) {
+      return {
+        aceptada: false,
+        motivo: `El bloque de 'z' debe tener longitud 2m+2 con m ≥ 2 (par y ≥ 6). Se leyó ${zCount}.`,
+        steps
+      };
+    }
+
+    if (i >= nCadena || cadena[i] !== "y") {
+      return {
+        aceptada: false,
+        motivo: "Después del bloque de 'z' debe venir un bloque final de 'y'.",
+        steps
+      };
+    }
+
+    // 4) Bloque final de y: y^{3n}
+    let yFinalCount = 0;
+    while (i < nCadena && cadena[i] === "y") {
+      if (i + 2 >= nCadena ||
+          cadena[i + 1] !== "y" ||
+          cadena[i + 2] !== "y") {
+        return {
+          aceptada: false,
+          motivo: "El bloque final de 'y' debe agruparse en triples 'yyy'.",
+          steps
+        };
+      }
+
+      if (stack[stack.length - 1] !== "A") {
+        return {
+          aceptada: false,
+          motivo: "No hay 'A' suficientes en la pila para el bloque final de 'y' (no se cumple 3n).",
+          steps
+        };
+      }
+
+      const estadoAntes = state;
+      const pilaAntes = stack.slice();
+
+      state = "q3";
+      stack.pop();
+      const pilaDespues = stack.slice();
+      const accion = "Leer 'yyy' en el bloque final de y y desapilar un 'A'.";
+      registrarPaso("yyy", estadoAntes, state, pilaAntes, pilaDespues, accion, i + 3);
+
+      i += 3;
+      yFinalCount += 3;
+    }
+
+    if (yFinalCount !== 3 * n) {
+      return {
+        aceptada: false,
+        motivo: `El bloque final de 'y' debe tener longitud 3n. Se esperaba ${3 * n} y se leyó ${yFinalCount}.`,
+        steps
+      };
+    }
+
+    // 5) La cadena debe terminar aquí y la pila volver a Z0
+    if (i !== nCadena) {
+      return {
+        aceptada: false,
+        motivo: "La cadena contiene símbolos extra después de terminar el patrón esperado.",
+        steps
+      };
+    }
+
+    if (!(stack.length === 1 && stack[0] === "Z0")) {
+      return {
+        aceptada: false,
+        motivo: "Al finalizar, la pila debe contener solo Z0.",
+        steps
+      };
+    }
+
+    // Paso final de aceptación
+    const estadoAntes = state;
+    const pilaAntes = stack.slice();
+    state = "q4";
+    const pilaDespues = stack.slice();
+    const accionFinal = "Entrada consumida y pila con solo Z0. Transición a estado de aceptación q4.";
+    registrarPaso("", estadoAntes, state, pilaAntes, pilaDespues, accionFinal, i);
+
+    return {
+      aceptada: true,
+      motivo: "La cadena pertenece a L = { x* y^{2n} z^m z^{m+2} y^{3n} | n ≥ 1, m ≥ 2 }.",
+      steps
+    };
+  }
+
+  // Eventos
+  btnComprobar.addEventListener("click", () => {
+    const cadena = inputCadena.value.trim();
+
+    if (!cadena) {
+      mostrarResultado(false, "Ingrese una cadena para simular.");
+      limpiarSalidas();
+      return;
+    }
+
+    if (!/^[xyz]+$/.test(cadena)) {
+      mostrarResultado(false, "Solo se permiten los símbolos x, y y z.");
+      limpiarSalidas();
+      return;
+    }
+
+    const { aceptada, motivo, steps } = simularCadena(cadena);
+    mostrarResultado(aceptada, motivo);
+    iniciarAnimacion(steps);
+  });
+
+  btnEjemplo.addEventListener("click", () => {
+    inputCadena.value = "xxyyzzzzzzyyyyyyyyy"; // Ejemplo válido típico
+  });
+</script>
+</body>
+</html>
