@@ -9,119 +9,186 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", sans-serif;
     }
+
+    /* FONDO ROSA PÁLIDO DIFERENTE (GRADIENTE) */
     body {
       margin: 0;
-      background: #0b1120;
-      color: #e5e7eb;
+      background: radial-gradient(circle at top left, #ffe4e6 0%, #fff1f2 40%, #ffffff 100%);
+      color: #1f2937;
     }
+
+    /* HEADER TIPO BARRA SUPERIOR */
     header {
-      text-align: center;
-      padding: 16px 8px;
-      background: #020617;
-      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 24px;
+      background: #f472b6;
+      background: linear-gradient(90deg, #f973b7, #ec4899, #db2777);
+      color: #fdf2f8;
+      box-shadow: 0 4px 16px rgba(236, 72, 153, 0.45);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    header h1 {
-      margin: 2px 0;
-      font-size: 1.2rem;
-      color: #f97316;
+    .header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .header-title h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      letter-spacing: 1px;
     }
-    header h2 {
-      margin: 2px 0;
-      font-size: 0.95rem;
-      color: #e5e7eb;
+    .header-title span {
+      font-size: 0.85rem;
+      opacity: 0.95;
     }
-    header h3 {
-      margin: 4px 0;
-      font-size: 1rem;
-      color: #22c55e;
+    .header-tag {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(254, 249, 195, 0.25);
+      border: 1px solid rgba(254, 240, 138, 0.7);
+      color: #fefce8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
     main {
-      padding: 16px;
-      max-width: 1200px;
+      padding: 18px 22px;
+      max-width: 1300px;
       margin: 0 auto 40px auto;
     }
 
-    .grid {
+    /* NUEVO LAYOUT: 3 COLUMNAS */
+    .layout {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
+      grid-template-columns: 0.95fr 1.05fr 1.1fr;
+      gap: 18px;
+      align-items: flex-start;
     }
-    @media (max-width: 900px) {
-      .grid {
+
+    @media (max-width: 1050px) {
+      .layout {
         grid-template-columns: 1fr;
       }
     }
 
     .card {
-      background: #020617;
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid #1e293b;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      margin-bottom: 16px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px 18px;
+      border: 1px solid #fecdd3;
+      box-shadow: 0 16px 30px rgba(248, 113, 161, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background:
+        radial-gradient(circle at top left, #f9a8d4 0, transparent 55%),
+        radial-gradient(circle at bottom right, #fed7e2 0, transparent 55%);
+      pointer-events: none;
+    }
+    .card > * {
+      position: relative;
+      z-index: 1;
     }
     .card h3 {
       margin-top: 0;
       margin-bottom: 8px;
-      font-size: 1.05rem;
-      color: #38bdf8;
+      font-size: 1.02rem;
+      color: #9d174d;
     }
     .card h4 {
       margin: 8px 0;
-      font-size: 0.95rem;
-      color: #a5b4fc;
+      font-size: 0.93rem;
+      color: #be185d;
     }
+
+    .small {
+      font-size: 0.84rem;
+    }
+
     label {
       font-size: 0.9rem;
       font-weight: 600;
       display: block;
       margin-bottom: 4px;
+      color: #4b5563;
     }
     input[type="text"] {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid #fecdd3;
+      background: #fff1f2;
+      color: #111827;
       font-size: 0.95rem;
+      outline: none;
+      transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
     }
     input[type="text"]::placeholder {
-      color: #6b7280;
+      color: #9ca3af;
     }
+    input[type="text"]:focus {
+      border-color: #ec4899;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.35);
+      background: #ffffff;
+    }
+
     .botones {
-      margin-top: 8px;
+      margin-top: 10px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
+
+    /* BOTONES ROSA BONITOS (YA DIFERENTES AL ORIGINAL) */
     button {
-      padding: 8px 14px;
-      border-radius: 999px;
+      padding: 9px 16px;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
       font-size: 0.9rem;
-      font-weight: 600;
-      color: #f9fafb;
-      background: #0ea5e9;
+      font-weight: 700;
+      color: #fdf2f8;
+      background: radial-gradient(circle at top left, #f9a8d4, #ec4899 55%, #db2777);
+      box-shadow: 0 8px 22px rgba(236, 72, 153, 0.55);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
     }
     button.segundo {
-      background: #0284c7;
+      background: radial-gradient(circle at top left, #fed7aa, #fb7185 55%, #f97316);
+      box-shadow: 0 8px 22px rgba(249, 115, 22, 0.5);
     }
     button:hover {
       filter: brightness(1.05);
-      transform: translateY(-1px);
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 12px 26px rgba(236, 72, 153, 0.6);
     }
+    button:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
+    }
+
     .velocidad {
       margin-top: 4px;
-      font-size: 0.85rem;
-      color: #cbd5f5;
+      font-size: 0.83rem;
+      color: #6b7280;
       display: flex;
-      gap: 4px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -132,27 +199,29 @@
       gap: 4px;
       margin-bottom: 0;
     }
+
     .resultado {
-      margin-top: 10px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-weight: 600;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 700;
       font-size: 0.9rem;
       display: none;
     }
     .aceptada {
       display: block;
-      background: rgba(34,197,94,0.08);
+      background: #dcfce7;
       border: 1px solid #22c55e;
-      color: #bbf7d0;
+      color: #166534;
     }
     .rechazada {
       display: block;
-      background: rgba(248,113,113,0.08);
+      background: #fee2e2;
       border: 1px solid #f97373;
-      color: #fecaca;
+      color: #b91c1c;
     }
 
+    /* TABLA */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -160,95 +229,165 @@
       font-size: 0.8rem;
     }
     thead {
-      background: #020617;
+      background: #ffe4e6;
       position: sticky;
       top: 0;
       z-index: 1;
     }
     th, td {
-      border: 1px solid #1f2937;
+      border: 1px solid #fecdd3;
       padding: 4px 6px;
       text-align: center;
     }
     th {
-      color: #e5e7eb;
-      font-weight: 600;
+      color: #9d174d;
+      font-weight: 700;
     }
     tbody {
-      background: #020617;
+      background: #fffafc;
     }
     .tabla-contenedor {
-      max-height: 320px;
+      max-height: 280px;
       overflow-y: auto;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
+      border-radius: 12px;
+      border: 1px solid #fecdd3;
       margin-top: 6px;
+      background: #fff;
     }
 
     .lista-di {
       margin-top: 10px;
-      max-height: 200px;
+      max-height: 180px;
       overflow-y: auto;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
+      border-radius: 12px;
+      border: 1px solid #fecdd3;
       padding: 8px;
       font-size: 0.82rem;
-      background: #020617;
+      background: #fffafc;
     }
     .lista-di li {
       margin-bottom: 4px;
     }
 
     code {
-      background: #020617;
+      background: #fff1f2;
       padding: 1px 4px;
       border-radius: 4px;
       font-size: 0.85rem;
+      color: #be123c;
     }
     pre {
-      background: #020617;
-      border-radius: 8px;
+      background: #fff7fb;
+      border-radius: 12px;
       padding: 8px;
       font-size: 0.82rem;
       overflow-x: auto;
       white-space: pre-wrap;
+      border: 1px solid #fecdd3;
     }
-    .small {
-      font-size: 0.85rem;
+
+    /* ---------- AUTÓMATA VISUAL ---------- */
+    .pda-diagram {
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #fecdd3;
+      background: radial-gradient(circle at top left, #fce7f3, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      overflow-x: auto;
     }
+    .pda-state {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #fef9c3;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(248, 113, 165, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s, border 0.2s, background 0.2s, color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .pda-state.accept {
+      background: #bbf7d0;
+    }
+
+    .pda-state-active {
+      transform: scale(1.12);
+      border-color: #ec4899;
+      background: #f472b6;
+      color: #ffffff;
+      box-shadow:
+        0 0 0 3px rgba(236, 72, 153, 0.5),
+        0 0 25px rgba(236, 72, 153, 0.8);
+    }
+
+    .pda-arrow {
+      flex-shrink: 0;
+      font-size: 1.4rem;
+      color: #fb7185;
+      transition: transform 0.2s, color 0.2s, text-shadow 0.2s;
+    }
+    .pda-arrow-active {
+      color: #be123c;
+      transform: scale(1.3);
+      text-shadow: 0 0 12px rgba(190, 18, 60, 0.9);
+    }
+
+    .estado-actual-label,
+    .transicion-actual-label {
+      margin-top: 6px;
+      font-size: 0.83rem;
+      color: #4b5563;
+    }
+    .estado-actual-label code,
+    .transicion-actual-label code {
+      font-size: 0.9rem;
+    }
+
+    /* COLUMNAS ESPECÍFICAS DEL LAYOUT */
+    .col-diagrama {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .col-centro {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .col-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
   </style>
 </head>
 <body>
 <header>
-  <h1>PDA — Lenguaje L = { x* y<sup>2n</sup> z<sup>m</sup> z<sup>m+2</sup> y<sup>3n</sup> | n ≥ 1, m ≥ 2 }</h1>
-  <h2>Autómatas y Lenguajes Formales</h2>
+  <div class="header-title">
+    <h1>Simulador PDA</h1>
+    <span>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</span>
+  </div>
+  <div class="header-tag">
+    Autómatas y Lenguajes Formales
+  </div>
 </header>
 
 <main>
-  <div class="grid">
-    <!-- IZQUIERDA: entrada + diagrama + descripción -->
-    <section>
+  <div class="layout">
+    <!-- COLUMNA IZQUIERDA: DIAGRAMA Y FORMAL -->
+    <section class="col-diagrama">
       <div class="card">
-        <h3>Ingrese cadena (x,y,z)</h3>
-        <label for="cadena">Cadena a evaluar:</label>
-        <input id="cadena" type="text" placeholder="Ejemplo: yyzzzzzzyyy" />
-
-        <div class="botones">
-          <button id="btnComprobar">Comprobar</button>
-          <button id="btnEjemplo" class="segundo">Cargar ejemplo</button>
-          <div class="velocidad">
-            <span>Velocidad:</span>
-            <label><input type="radio" name="velocidad" value="lenta"> Lenta</label>
-            <label><input type="radio" name="velocidad" value="normal" checked> Normal</label>
-            <label><input type="radio" name="velocidad" value="rapida"> Rápida</label>
-          </div>
-        </div>
-
-        <div id="mensajeResultado" class="resultado"></div>
-      </div>
-
-      <div class="card">
-        <h3>Diagrama del PDA (esquema)</h3>
+        <h3>Diagrama del PDA</h3>
         <pre>
 q0   q1   q2   q3   q4
 
@@ -260,6 +399,25 @@ Transiciones (idea):
 - q2/q3 --y, Z ; λ--> q3      bloque final de y
 - q3 --λ, Z0 ; Z0--> q4       aceptación
         </pre>
+
+        <!-- AUTÓMATA VISUAL MOVIBLE -->
+        <div class="pda-diagram">
+          <div id="state-q0" class="pda-state">q0</div>
+          <div id="arrow-q0-q1" class="pda-arrow">→</div>
+          <div id="state-q1" class="pda-state">q1</div>
+          <div id="arrow-q1-q2" class="pda-arrow">→</div>
+          <div id="state-q2" class="pda-state">q2</div>
+          <div id="arrow-q2-q3" class="pda-arrow">→</div>
+          <div id="state-q3" class="pda-state">q3</div>
+          <div id="arrow-q3-q4" class="pda-arrow">→</div>
+          <div id="state-q4" class="pda-state accept">q4</div>
+        </div>
+        <div class="estado-actual-label">
+          Estado actual: <code id="estadoActualLabel">q0</code>
+        </div>
+        <div class="transicion-actual-label">
+          Transición actual: <code id="transicionActualLabel">—</code>
+        </div>
       </div>
 
       <div class="card">
@@ -276,8 +434,41 @@ F = {q4}
       </div>
     </section>
 
-    <!-- DERECHA: tabla + descripción instantánea -->
-    <section>
+    <!-- COLUMNA CENTRAL: ENTRADA Y RESULTADO -->
+    <section class="col-centro">
+      <div class="card">
+        <h3>Entrada de la cadena</h3>
+        <label for="cadena">Cadena a evaluar (x, y, z):</label>
+        <input id="cadena" type="text" placeholder="Ejemplo: yyzzzzzzyyy" />
+
+        <div class="botones">
+          <button id="btnComprobar">Comprobar</button>
+          <button id="btnEjemplo" class="segundo">Cargar ejemplo</button>
+        </div>
+        <div class="velocidad">
+          <span>Velocidad:</span>
+          <label><input type="radio" name="velocidad" value="lenta"> Lenta</label>
+          <label><input type="radio" name="velocidad" value="normal" checked> Normal</label>
+          <label><input type="radio" name="velocidad" value="rapida"> Rápida</label>
+        </div>
+
+        <div id="mensajeResultado" class="resultado"></div>
+      </div>
+
+      <div class="card">
+        <h3>Notas del lenguaje</h3>
+        <p class="small">
+          El autómata verifica cadenas de la forma
+          <code>x* y^{2n} z^{m} z^{m+2} y^{3n}</code> con <strong>n ≥ 1</strong> y
+          <strong>m ≥ 2</strong>. El primer bloque de <code>y</code> tiene longitud
+          par, el bloque central de <code>z</code> es par y al menos 6, y el bloque final
+          de <code>y</code> se agrupa en triples.
+        </p>
+      </div>
+    </section>
+
+    <!-- COLUMNA DERECHA: TABLA Y DI -->
+    <section class="col-derecha">
       <div class="card">
         <h3>Tabla de pasos</h3>
         <div class="tabla-contenedor">
@@ -301,7 +492,7 @@ F = {q4}
       </div>
 
       <div class="card">
-        <h3>Descripción instantánea (lista)</h3>
+        <h3>Descripción instantánea</h3>
         <ul id="listaDI" class="lista-di">
           <!-- dinámico -->
         </ul>
@@ -318,6 +509,53 @@ F = {q4}
   const tablaPasos    = document.getElementById("tablaPasos");
   const listaDI       = document.getElementById("listaDI");
   const radiosVel     = document.querySelectorAll("input[name='velocidad']");
+
+  // estados visuales
+  const estadoActualLabel = document.getElementById("estadoActualLabel");
+  const transicionActualLabel = document.getElementById("transicionActualLabel");
+
+  const stateNodes = {
+    q0: document.getElementById("state-q0"),
+    q1: document.getElementById("state-q1"),
+    q2: document.getElementById("state-q2"),
+    q3: document.getElementById("state-q3"),
+    q4: document.getElementById("state-q4"),
+  };
+
+  // flechas entre estados
+  const arrowNodes = {
+    "q0->q1": document.getElementById("arrow-q0-q1"),
+    "q1->q2": document.getElementById("arrow-q1-q2"),
+    "q2->q3": document.getElementById("arrow-q2-q3"),
+    "q3->q4": document.getElementById("arrow-q3-q4"),
+  };
+
+  function highlightState(q) {
+    Object.values(stateNodes).forEach(node => {
+      if (node) node.classList.remove("pda-state-active");
+    });
+    const node = stateNodes[q];
+    if (node) node.classList.add("pda-state-active");
+    if (estadoActualLabel) estadoActualLabel.textContent = q;
+  }
+
+  function clearArrowHighlight() {
+    Object.values(arrowNodes).forEach(node => {
+      if (node) node.classList.remove("pda-arrow-active");
+    });
+    if (transicionActualLabel) transicionActualLabel.textContent = "—";
+  }
+
+  function highlightTransition(from, to, simbolo, tope, accion) {
+    clearArrowHighlight();
+    const key = `${from}->${to}`;
+    const arrow = arrowNodes[key];
+    if (arrow) arrow.classList.add("pda-arrow-active");
+    if (transicionActualLabel) {
+      transicionActualLabel.textContent =
+        `${from} -- ${simbolo} , ${tope} → ${to}  (${accion})`;
+    }
+  }
 
   let animTimer = null;
 
@@ -337,7 +575,7 @@ F = {q4}
       msgResultado.textContent = "CADENA ACEPTADA ✅";
       msgResultado.className = "resultado aceptada";
     } else {
-      msgResultado.textContent = "CADENA RECHAZADA ❌  " + resultado.motivo;
+      msgResultado.textContent = "CADENA FUE RECHAZADA ❌  " + resultado.motivo;
       msgResultado.className = "resultado rechazada";
     }
   }
@@ -349,6 +587,8 @@ F = {q4}
     }
     tablaPasos.innerHTML = "";
     listaDI.innerHTML = "";
+    highlightState("q0");
+    clearArrowHighlight();
   }
 
   function iniciarAnimacion(steps) {
@@ -381,10 +621,14 @@ F = {q4}
       }, ${s.pilaDespues})`;
       listaDI.appendChild(li);
 
+      highlightState(s.estadoDespues); // mover estado visual
+      highlightTransition(s.estadoAntes, s.estadoDespues, s.simbolo, s.topeAntes, s.accion);
+
       i++;
     }, delay);
   }
 
+  // lógica del PDA
   function simularCadena(cadena) {
     const steps = [];
     let pasoNum = 1;
@@ -419,7 +663,6 @@ F = {q4}
     while (i < nCadena) {
       const c = cadena[i];
 
-      // PREFIJO x*
       if (phase === "prefix") {
         if (c === "x") {
           const estadoAntes = state;
@@ -431,13 +674,11 @@ F = {q4}
         }
         if (c === "y") {
           phase = "y1";
-          // cae a la parte de y1 para este mismo símbolo
         } else {
           return { aceptada: false, motivo: "Símbolo inválido en el prefijo (solo x* permitido).", steps };
         }
       }
 
-      // PRIMER BLOQUE y^{2n}
       if (phase === "y1") {
         if (c === "y") {
           const estadoAntes = state;
@@ -470,26 +711,22 @@ F = {q4}
             };
           }
           phase = "z";
-          // cae a bloque z
         } else {
           return { aceptada: false, motivo: "Después del primer bloque de y solo puede venir 'z'.", steps };
         }
       }
 
-      // BLOQUE DE z (z^m z^{m+2}) -> total 2m+2, par y ≥ 6
       if (phase === "z") {
         if (c === "z") {
           const estadoAntes = state;
           const pilaAntes = stack.slice();
 
           if (zCount === 0) {
-            // primera z: cambia a q2, no modifica pila
             state = "q2";
             zCount++;
             const accion = "leer z";
             registrarPaso("z", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
           } else {
-            // resto: en q2, apilar Z
             state = "q2";
             stack.push("Z");
             zCount++;
@@ -510,27 +747,23 @@ F = {q4}
             };
           }
           phase = "y2";
-          // cae al bloque final de y
         } else {
           return { aceptada: false, motivo: "Solo se permiten 'z' en el bloque central, luego 'y'.", steps };
         }
       }
 
-      // BLOQUE FINAL y^{3n}
       if (phase === "y2") {
         if (c === "y") {
           const estadoAntes = state;
           const pilaAntes = stack.slice();
 
           if (y2Count === 0) {
-            // primera y del bloque final
             state = "q3";
             const accion = "inicio y finales";
             y2Count++;
             registrarPaso("y", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
           } else {
             state = "q3";
-            // en el ejemplo se ve que se van quitando Z al final
             if (stack[stack.length - 1] === "Z") {
               stack.pop();
             }
@@ -545,9 +778,8 @@ F = {q4}
           return { aceptada: false, motivo: "El bloque final solo puede contener 'y'.", steps };
         }
       }
-    } // while
+    }
 
-    // Validaciones finales
     if (phase !== "y2") {
       return {
         aceptada: false,
@@ -573,7 +805,6 @@ F = {q4}
       };
     }
 
-    // Paso de aceptación λ
     const estadoAntes = state;
     const pilaAntes = stack.slice();
     state = "q4";
@@ -587,7 +818,6 @@ F = {q4}
     };
   }
 
-  // Eventos
   btnComprobar.addEventListener("click", () => {
     const cadena = inputCadena.value.trim();
 
@@ -609,9 +839,12 @@ F = {q4}
   });
 
   btnEjemplo.addEventListener("click", () => {
-    // ejemplo del screenshot: yy zzzzzz yyy
-    inputCadena.value = "yyzzzzzzyyy";
+    inputCadena.value = "yyzzzzzzyyy"; // ejemplo
+    highlightState("q0");
+    clearArrowHighlight();
   });
+
+  highlightState("q0");
 </script>
 </body>
 </html>
