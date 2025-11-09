@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de Autómata de Pila — Bienvenida</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #fce7f3 0%, #e0f2fe 40%, #ffffff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #1e293b;
+    }
+
+    .card {
+      background: #ffffffdd;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      max-width: 800px;
+      text-align: center;
+      padding: 40px 50px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      color: #be185d;
+      margin-top: 0;
+      text-shadow: 0 2px 6px rgba(236, 72, 153, 0.2);
+    }
+
+    p {
+      font-size: 1rem;
+      color: #334155;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .botones {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+    }
+
+    .btn-ir {
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+    }
+
+    .btn-volver {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>👋 ¡Bienvenido al Simulador de Autómata de Pila!</h1>
+    <p>
+      Explora el comportamiento del lenguaje <strong>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</strong>.  
+      En esta herramienta podrás observar paso a paso cómo el autómata procesa las cadenas, cómo evoluciona su pila y cuándo una cadena es aceptada o rechazada.
+    </p>
+
+    <div class="botones">
+      <button class="btn-ir" onclick="window.location.href='automatas.html'">
+        🚀 Bienvenido — Disfruta y Aprende
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    Universidad Mariano Gálvez • Autómatas y Lenguajes Formales • 2025
+  </footer>
+</body>
+</html>
