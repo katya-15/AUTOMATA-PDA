@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>PDA — Lenguaje L = { x* y^{2n} z^m z^{m+2} y^{3n} }</title>
+  <title>PDA — Lenguaje L = { x* y²ⁿ zᵐ zᵐ⁺² y³ⁿ | n≥1, m≥2 }</title>
   <style>
     * {
       box-sizing: border-box;
@@ -10,14 +10,12 @@
         "Segoe UI", sans-serif;
     }
 
-    /* FONDO ELEGANTE: ROSA + AZUL SUAVE */
     body {
       margin: 0;
       background: radial-gradient(circle at top left, #fce7f3 0%, #e0f2fe 40%, #ffffff 100%);
       color: #0f172a;
     }
 
-    /* HEADER ESTILO BARRA SUPERIOR ELEGANTE */
     header {
       display: flex;
       align-items: center;
@@ -59,7 +57,6 @@
       backdrop-filter: blur(8px);
     }
 
-    /* 🔹 BOTÓN VOLVER AL INICIO */
     .btn-inicio {
       padding: 9px 18px;
       border-radius: 12px;
@@ -84,7 +81,6 @@
       margin: 0 auto 40px auto;
     }
 
-    /* LAYOUT 3 COLUMNAS */
     .layout {
       display: grid;
       grid-template-columns: 0.9fr 1.1fr 1.1fr;
@@ -97,7 +93,6 @@
       }
     }
 
-    /* TARJETAS TIPO GLASS */
     .card {
       background: rgba(255, 255, 255, 0.86);
       border-radius: 20px;
@@ -188,7 +183,6 @@
       align-items: center;
     }
 
-    /* BOTONES MÁS ELEGANTES: ROSA + AZUL */
     button {
       padding: 9px 16px;
       border-radius: 12px;
@@ -260,7 +254,6 @@
       color: #b91c1c;
     }
 
-    /* === TABLA MODERNA Y BONITA === */
     table {
       width: 100%;
       border-collapse: separate;
@@ -357,7 +350,6 @@
       border: 1px solid rgba(203, 213, 225, 0.9);
     }
 
-    /* ---------- AUTÓMATA VISUAL ---------- */
     .pda-diagram {
       margin-top: 10px;
       padding: 14px;
@@ -423,7 +415,6 @@
       font-size: 0.9rem;
     }
 
-    /* COLUMNAS DEL LAYOUT */
     .col-diagrama {
       display: flex;
       flex-direction: column;
@@ -440,7 +431,6 @@
       gap: 16px;
     }
 
-    /* --- NUEVA SECCIÓN PARA LA IMAGEN GRANDE + VIDEO (fuera del layout) --- */
     .prototipo-section {
       margin-top: 40px;
       display: flex;
@@ -484,7 +474,6 @@
 
 <main>
   <div class="layout">
-    <!-- COLUMNA IZQUIERDA: DIAGRAMA Y FORMAL -->
     <section class="col-diagrama">
       <div class="card">
         <h3>Diagrama del PDA</h3>
@@ -500,7 +489,6 @@ Transiciones (idea):
 - q3 --λ, Z0 ; Z0--> q4       aceptación
         </pre>
 
-        <!-- AUTÓMATA VISUAL MOVIBLE -->
         <div class="pda-diagram">
           <div id="state-q0" class="pda-state">q0</div>
           <div id="arrow-q0-q1" class="pda-arrow">→</div>
@@ -534,7 +522,6 @@ F = {q4}
       </div>
     </section>
 
-    <!-- COLUMNA CENTRAL: ENTRADA Y NOTAS -->
     <section class="col-centro">
       <div class="card">
         <h3>Entrada de la cadena</h3>
@@ -569,7 +556,6 @@ F = {q4}
       </div>
     </section>
 
-    <!-- COLUMNA DERECHA: TABLA Y DI -->
     <section class="col-derecha">
       <div class="card">
         <h3>Tabla de pasos</h3>
@@ -587,7 +573,6 @@ F = {q4}
               </tr>
             </thead>
             <tbody id="tablaPasos">
-              <!-- dinámico -->
             </tbody>
           </table>
         </div>
@@ -596,13 +581,10 @@ F = {q4}
       <div class="card">
         <h3>Descripción instantánea</h3>
         <ul id="listaDI" class="lista-di">
-          <!-- dinámico -->
         </ul>
       </div>
     </section>
   </div>
-
-  <!-- SECCIÓN NUEVA: IMAGEN GRANDE + BOTÓN VIDEO A LA DERECHA -->
   <section class="prototipo-section">
     <div class="prototipo-img">
       <h3 style="color:#be185d; text-align:center; margin-top:0;">Vista del prototipo</h3>
@@ -738,7 +720,7 @@ F = {q4}
       }, ${s.pilaDespues})`;
       listaDI.appendChild(li);
 
-      highlightState(s.estadoDespues); // mover estado visual
+      highlightState(s.estadoDespues); 
       highlightTransition(s.estadoAntes, s.estadoDespues, s.simbolo, s.topeAntes, s.accion);
 
       i++;
@@ -756,7 +738,7 @@ F = {q4}
     let i = 0;
     const nCadena = cadena.length;
 
-    let phase = "prefix"; // prefix, y1, z, y2
+    let phase = "prefix"; 
     let y1Count = 0;
     let zCount = 0;
     let y2Count = 0;
@@ -956,23 +938,22 @@ F = {q4}
   });
 
   btnEjemplo.addEventListener("click", () => {
-    inputCadena.value = "yyzzzzzzyyy"; // ejemplo original
+    inputCadena.value = "yyzzzzzzyyy"; 
     highlightState("q0");
     clearArrowHighlight();
   });
 
-  // ejemplos adicionales
   const btnEjemplo2 = document.getElementById("btnEjemplo2");
   const btnEjemplo3 = document.getElementById("btnEjemplo3");
 
   btnEjemplo2.addEventListener("click", () => {
-    inputCadena.value = "xxyyzzzzzzyyy"; // ejemplo válido con x
+    inputCadena.value = "xxyyzzzzzzyyy"; 
     highlightState("q0");
     clearArrowHighlight();
   });
 
   btnEjemplo3.addEventListener("click", () => {
-    inputCadena.value = "yyyyzzzzzzzzyyyyyy"; // ejemplo que debería ser rechazado
+    inputCadena.value = "yyyyzzzzzzzzyyyyyy"; 
     highlightState("q0");
     clearArrowHighlight();
   });
