@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDA — Lenguaje L = { x* y^{2n} z^m z^{m+2} y^{3n} }</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    /* FONDO ELEGANTE: ROSA + AZUL SUAVE */
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, #fce7f3 0%, #e0f2fe 40%, #ffffff 100%);
+      color: #0f172a;
+    }
+
+    /* HEADER ESTILO BARRA SUPERIOR ELEGANTE */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 26px;
+      background: linear-gradient(90deg, #ec4899, #6366f1, #06b6d4);
+      color: #f9fafb;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.35);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .header-title h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .header-title span {
+      font-size: 0.85rem;
+      opacity: 0.95;
+    }
+    .header-tag {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.16);
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      color: #e0f2fe;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+    }
+
+    /* 🔹 BOTÓN VOLVER AL INICIO */
+    .btn-inicio {
+      padding: 9px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f9fafb;
+      background: linear-gradient(135deg, #06b6d4, #6366f1);
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-inicio:hover {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+      box-shadow: 0 12px 25px rgba(79, 70, 229, 0.5);
+    }
+
+    main {
+      padding: 20px 22px;
+      max-width: 1300px;
+      margin: 0 auto 40px auto;
+    }
+
+    /* LAYOUT 3 COLUMNAS */
+    .layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr 1.1fr;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    @media (max-width: 1050px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* TARJETAS TIPO GLASS */
+    .card {
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 20px;
+      padding: 16px 18px;
+      border: 1px solid rgba(248, 187, 208, 0.9);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(248, 250, 252, 0.6);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      background:
+        radial-gradient(circle at top left, #f9a8d4 0, transparent 55%),
+        radial-gradient(circle at bottom right, #bfdbfe 0, transparent 55%);
+      pointer-events: none;
+    }
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.02rem;
+      color: #be185d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card h3::before {
+      content: "";
+      width: 6px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ec4899, #0ea5e9);
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+    }
+    .card h4 {
+      margin: 8px 0;
+      font-size: 0.93rem;
+      color: #7e22ce;
+    }
+
+    .small {
+      font-size: 0.84rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      color: #334155;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: 999px;
+      border: 1px solid #fecdd3;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
+      font-size: 0.95rem;
+      outline: none;
+      transition: box-shadow 0.15s, border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    input[type="text"]::placeholder {
+      color: #9ca3af;
+    }
+    input[type="text"]:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.35);
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .botones {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* BOTONES MÁS ELEGANTES: ROSA + AZUL */
+    button {
+      padding: 9px 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f9fafb;
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+      box-shadow: 0 10px 26px rgba(79, 70, 229, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    }
+    button.segundo {
+      background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+      box-shadow: 0 10px 26px rgba(14, 165, 233, 0.5);
+    }
+    button:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.5);
+    }
+    button:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 5px 14px rgba(30, 64, 175, 0.4);
+    }
+
+    .velocidad {
+      margin-top: 8px;
+      font-size: 0.83rem;
+      color: #64748b;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .velocidad label {
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .resultado {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .aceptada {
+      display: block;
+      background: #dcfce7;
+      border: 1px solid #22c55e;
+      color: #166534;
+    }
+    .rechazada {
+      display: block;
+      background: #fee2e2;
+      border: 1px solid #f97373;
+      color: #b91c1c;
+    }
+
+    /* === TABLA MODERNA Y BONITA === */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    thead tr {
+      background: linear-gradient(90deg, #f9a8d4, #bfdbfe);
+    }
+    th {
+      padding: 6px 8px;
+      text-align: center;
+      font-weight: 700;
+      color: #312e81;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    th:last-child {
+      border-right: none;
+    }
+
+    tbody tr {
+      transition: background 0.12s, transform 0.08s, box-shadow 0.08s;
+    }
+    tbody tr:nth-child(even) {
+      background: #fdf2ff;
+    }
+    tbody tr:nth-child(odd) {
+      background: #f9fafb;
+    }
+    td {
+      padding: 5px 6px;
+      text-align: center;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      border-right: 1px solid rgba(226, 232, 240, 0.7);
+    }
+    td:last-child {
+      border-right: none;
+    }
+    tbody tr:hover {
+      background: #e0f2fe;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.35);
+    }
+
+    .tabla-contenedor {
+      max-height: 280px;
+      overflow-y: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      margin-top: 6px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(248, 250, 252, 0.8);
+    }
+
+    .lista-di {
+      margin-top: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 8px;
+      font-size: 0.82rem;
+      background: rgba(248, 250, 252, 0.95);
+    }
+    .lista-di li {
+      margin-bottom: 4px;
+      padding: 3px 6px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    code {
+      background: #eef2ff;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #4c1d95;
+    }
+    pre {
+      background: rgba(248, 250, 252, 0.95);
+      border-radius: 12px;
+      padding: 8px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      border: 1px solid rgba(203, 213, 225, 0.9);
+    }
+
+    /* ---------- AUTÓMATA VISUAL ---------- */
+    .pda-diagram {
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      background: radial-gradient(circle at top left, #fdf2ff, #eff6ff);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      overflow-x: auto;
+    }
+    .pda-state {
+      width: 62px;
+      height: 62px;
+      border-radius: 999px;
+      background: #fef9c3;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s, border 0.2s, background 0.2s, color 0.2s;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .pda-state.accept {
+      background: #bbf7d0;
+    }
+
+    .pda-state-active {
+      transform: scale(1.12);
+      border-color: #ec4899;
+      background: #f472b6;
+      color: #ffffff;
+      box-shadow:
+        0 0 0 3px rgba(236, 72, 153, 0.5),
+        0 0 25px rgba(236, 72, 153, 0.8);
+    }
+
+    .pda-arrow {
+      flex-shrink: 0;
+      font-size: 1.4rem;
+      color: #38bdf8;
+      transition: transform 0.2s, color 0.2s, text-shadow 0.2s;
+    }
+    .pda-arrow-active {
+      color: #1d4ed8;
+      transform: scale(1.3);
+      text-shadow: 0 0 12px rgba(37, 99, 235, 0.9);
+    }
+
+    .estado-actual-label,
+    .transicion-actual-label {
+      margin-top: 6px;
+      font-size: 0.83rem;
+      color: #475569;
+    }
+    .estado-actual-label code,
+    .transicion-actual-label code {
+      font-size: 0.9rem;
+    }
+
+    /* COLUMNAS DEL LAYOUT */
+    .col-diagrama {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .col-centro {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .col-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* --- NUEVA SECCIÓN PARA LA IMAGEN GRANDE + VIDEO (fuera del layout) --- */
+    .prototipo-section {
+      margin-top: 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .prototipo-img {
+      flex: 2;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+      padding: 15px;
+    }
+    .prototipo-img img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .prototipo-video {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .prototipo-video a button {
+      width: 100%;
+      max-width: 250px;
+      background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <h1>Simulador PDA</h1>
+    <span>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</span>
+  </div>
+
+  <!-- 🏠 BOTÓN VOLVER AL INICIO -->
+  <button class="btn-inicio" onclick="window.location.href='index.html'">
+    🏠 Volver al inicio
+  </button>
+</header>
+
+<main>
+  <div class="layout">
+    <!-- COLUMNA IZQUIERDA: DIAGRAMA Y FORMAL -->
+    <section class="col-diagrama">
+      <div class="card">
+        <h3>Diagrama del PDA</h3>
+        <pre>
+q0   q1   q2   q3   q4
+
+Transiciones (idea):
+- q0 --x, λ ; λ--> q0         ignora x
+- q0/q1 --y, λ ; Y--> q1      primer bloque de y
+- q1 --z, λ ; λ--> q2         entra al bloque de z
+- q2 --z, λ ; Z--> q2         recorre los z
+- q2/q3 --y, Z ; λ--> q3      bloque final de y
+- q3 --λ, Z0 ; Z0--> q4       aceptación
+        </pre>
+
+        <!-- AUTÓMATA VISUAL MOVIBLE -->
+        <div class="pda-diagram">
+          <div id="state-q0" class="pda-state">q0</div>
+          <div id="arrow-q0-q1" class="pda-arrow">→</div>
+          <div id="state-q1" class="pda-state">q1</div>
+          <div id="arrow-q1-q2" class="pda-arrow">→</div>
+          <div id="state-q2" class="pda-state">q2</div>
+          <div id="arrow-q2-q3" class="pda-arrow">→</div>
+          <div id="state-q3" class="pda-state">q3</div>
+          <div id="arrow-q3-q4" class="pda-arrow">→</div>
+          <div id="state-q4" class="pda-state accept">q4</div>
+        </div>
+        <div class="estado-actual-label">
+          Estado actual: <code id="estadoActualLabel">q0</code>
+        </div>
+        <div class="transicion-actual-label">
+          Transición actual: <code id="transicionActualLabel">—</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Descripción formal (resumen)</h3>
+        <pre>
+M = (Q, Σ, Γ, δ, q0, Z0, F)
+Q = {q0,q1,q2,q3,q4}
+Σ = {x,y,z}
+Γ = {Z0,Y,Z}
+q0 estado inicial
+Z0 símbolo inicial de la pila
+F = {q4}
+        </pre>
+      </div>
+    </section>
+
+    <!-- COLUMNA CENTRAL: ENTRADA Y NOTAS -->
+    <section class="col-centro">
+      <div class="card">
+        <h3>Entrada de la cadena</h3>
+        <label for="cadena">Cadena a evaluar (x, y, z):</label>
+        <input id="cadena" type="text" placeholder="Ejemplo: yyzzzzzzyyy" />
+
+        <div class="botones">
+          <button id="btnComprobar">Comprobar</button>
+          <button id="btnEjemplo" class="segundo">Cargar ejemplo</button>
+          <button id="btnEjemplo2" class="segundo">Ejemplo 2</button>
+          <button id="btnEjemplo3" class="segundo">Ejemplo 3</button>
+        </div>
+        <div class="velocidad">
+          <span>Velocidad:</span>
+          <label><input type="radio" name="velocidad" value="lenta"> Lenta</label>
+          <label><input type="radio" name="velocidad" value="normal" checked> Normal</label>
+          <label><input type="radio" name="velocidad" value="rapida"> Rápida</label>
+        </div>
+
+        <div id="mensajeResultado" class="resultado"></div>
+      </div>
+
+      <div class="card">
+        <h3>Notas del lenguaje</h3>
+        <p class="small">
+          El autómata verifica cadenas de la forma
+          <code>x* y^{2n} z^{m} z^{m+2} y^{3n}</code> con <strong>n ≥ 1</strong> y
+          <strong>m ≥ 2</strong>. El primer bloque de <code>y</code> tiene longitud
+          par, el bloque central de <code>z</code> es par y al menos 6, y el bloque final
+          de <code>y</code> se agrupa en triples.
+        </p>
+      </div>
+    </section>
+
+    <!-- COLUMNA DERECHA: TABLA Y DI -->
+    <section class="col-derecha">
+      <div class="card">
+        <h3>Tabla de pasos</h3>
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Paso</th>
+                <th>Símbolo</th>
+                <th>Estado</th>
+                <th>Tope pila</th>
+                <th>Acción</th>
+                <th>Nuevo estado</th>
+                <th>Pila</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPasos">
+              <!-- dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Descripción instantánea</h3>
+        <ul id="listaDI" class="lista-di">
+          <!-- dinámico -->
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- SECCIÓN NUEVA: IMAGEN GRANDE + BOTÓN VIDEO A LA DERECHA -->
+  <section class="prototipo-section">
+    <div class="prototipo-img">
+      <h3 style="color:#be185d; text-align:center; margin-top:0;">Vista del prototipo</h3>
+      <img src="Ejercicio.png" alt="Vista del Prototipo del Autómata PDA">
+    </div>
+
+    <div class="prototipo-video">
+      <a href="https://drive.google.com/drive/folders/1EhI-iqt1pDZKcQPCHZrrqD4kBLk83GYq?usp=sharing"
+         target="_blank" rel="noopener noreferrer">
+        <button class="segundo">🎥 Ver video del Funcionamiento</button>
+      </a>
+    </div>
+  </section>
+</main>
+
+<script>
+  const inputCadena   = document.getElementById("cadena");
+  const btnComprobar  = document.getElementById("btnComprobar");
+  const btnEjemplo    = document.getElementById("btnEjemplo");
+  const msgResultado  = document.getElementById("mensajeResultado");
+  const tablaPasos    = document.getElementById("tablaPasos");
+  const listaDI       = document.getElementById("listaDI");
+  const radiosVel     = document.querySelectorAll("input[name='velocidad']");
+
+  // estados visuales
+  const estadoActualLabel = document.getElementById("estadoActualLabel");
+  const transicionActualLabel = document.getElementById("transicionActualLabel");
+
+  const stateNodes = {
+    q0: document.getElementById("state-q0"),
+    q1: document.getElementById("state-q1"),
+    q2: document.getElementById("state-q2"),
+    q3: document.getElementById("state-q3"),
+    q4: document.getElementById("state-q4"),
+  };
+
+  // flechas entre estados
+  const arrowNodes = {
+    "q0->q1": document.getElementById("arrow-q0-q1"),
+    "q1->q2": document.getElementById("arrow-q1-q2"),
+    "q2->q3": document.getElementById("arrow-q2-q3"),
+    "q3->q4": document.getElementById("arrow-q3-q4"),
+  };
+
+  function highlightState(q) {
+    Object.values(stateNodes).forEach(node => {
+      if (node) node.classList.remove("pda-state-active");
+    });
+    const node = stateNodes[q];
+    if (node) node.classList.add("pda-state-active");
+    if (estadoActualLabel) estadoActualLabel.textContent = q;
+  }
+
+  function clearArrowHighlight() {
+    Object.values(arrowNodes).forEach(node => {
+      if (node) node.classList.remove("pda-arrow-active");
+    });
+    if (transicionActualLabel) transicionActualLabel.textContent = "—";
+  }
+
+  function highlightTransition(from, to, simbolo, tope, accion) {
+    clearArrowHighlight();
+    const key = `${from}->${to}`;
+    const arrow = arrowNodes[key];
+    if (arrow) arrow.classList.add("pda-arrow-active");
+    if (transicionActualLabel) {
+      transicionActualLabel.textContent =
+        `${from} -- ${simbolo} , ${tope} → ${to}  (${accion})`;
+    }
+  }
+
+  let animTimer = null;
+
+  function obtenerVelocidadMs() {
+    let val = "normal";
+    radiosVel.forEach(r => {
+      if (r.checked) val = r.value;
+    });
+    if (val === "lenta") return 800;
+    if (val === "rapida") return 150;
+    return 400; // normal
+  }
+
+  function mostrarResultado(resultado) {
+    msgResultado.style.display = "block";
+    if (resultado.aceptada) {
+      msgResultado.textContent = "CADENA ACEPTADA ✅";
+      msgResultado.className = "resultado aceptada";
+    } else {
+      msgResultado.textContent = "CADENA RECHAZADA ❌  " + resultado.motivo;
+      msgResultado.className = "resultado rechazada";
+    }
+  }
+
+  function limpiarSalidas() {
+    if (animTimer) {
+      clearInterval(animTimer);
+      animTimer = null;
+    }
+    tablaPasos.innerHTML = "";
+    listaDI.innerHTML = "";
+    highlightState("q0");
+    clearArrowHighlight();
+  }
+
+  function iniciarAnimacion(steps) {
+    limpiarSalidas();
+    const delay = obtenerVelocidadMs();
+    let i = 0;
+    animTimer = setInterval(() => {
+      if (i >= steps.length) {
+        clearInterval(animTimer);
+        animTimer = null;
+        return;
+      }
+      const s = steps[i];
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${s.paso}</td>
+        <td><code>${s.simbolo}</code></td>
+        <td>${s.estadoAntes}</td>
+        <td><code>${s.topeAntes}</code></td>
+        <td style="text-align:left;">${s.accion}</td>
+        <td>${s.estadoDespues}</td>
+        <td><code>${s.pilaDespues}</code></td>
+      `;
+      tablaPasos.appendChild(tr);
+
+      const li = document.createElement("li");
+      li.textContent = `DI ${s.paso}: (${s.estadoDespues}, ${
+        s.resto === "" ? "λ" : s.resto
+      }, ${s.pilaDespues})`;
+      listaDI.appendChild(li);
+
+      highlightState(s.estadoDespues); // mover estado visual
+      highlightTransition(s.estadoAntes, s.estadoDespues, s.simbolo, s.topeAntes, s.accion);
+
+      i++;
+    }, delay);
+  }
+
+  // lógica del PDA
+  function simularCadena(cadena) {
+    const steps = [];
+    let pasoNum = 1;
+
+    let state = "q0";
+    let stack = ["Z0"];
+
+    let i = 0;
+    const nCadena = cadena.length;
+
+    let phase = "prefix"; // prefix, y1, z, y2
+    let y1Count = 0;
+    let zCount = 0;
+    let y2Count = 0;
+
+    function registrarPaso(simbolo, estadoAntes, estadoDespues, pilaAntesArr, pilaDespuesArr, accion, idxDespues) {
+      const topeAntes = pilaAntesArr[pilaAntesArr.length - 1] || "∅";
+      const pilaDespues = pilaDespuesArr.join("");
+      const resto = cadena.slice(idxDespues);
+      steps.push({
+        paso: pasoNum++,
+        simbolo: simbolo === "" ? "λ" : simbolo,
+        estadoAntes,
+        estadoDespues,
+        topeAntes,
+        accion,
+        pilaDespues,
+        resto
+      });
+    }
+
+    while (i < nCadena) {
+      const c = cadena[i];
+
+      if (phase === "prefix") {
+        if (c === "x") {
+          const estadoAntes = state;
+          const pilaAntes = stack.slice();
+          const accion = "leer x (prefijo libre)";
+          registrarPaso("x", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          i++;
+          continue;
+        }
+        if (c === "y") {
+          phase = "y1";
+        } else {
+          return { aceptada: false, motivo: "Símbolo inválido en el prefijo (solo x* permitido).", steps };
+        }
+      }
+
+      if (phase === "y1") {
+        if (c === "y") {
+          const estadoAntes = state;
+          const pilaAntes = stack.slice();
+
+          if (y1Count === 0) {
+            state = "q1";
+            stack.push("Y");
+            y1Count++;
+            const accion = "leer y inicio";
+            registrarPaso("y", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          } else {
+            state = "q1";
+            stack.push("Y");
+            y1Count++;
+            const accion = "leer y (y1)";
+            registrarPaso("y", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          }
+
+          i++;
+          continue;
+        }
+
+        if (c === "z") {
+          if (y1Count < 2 || y1Count % 2 !== 0) {
+            return {
+              aceptada: false,
+              motivo: `El primer bloque de 'y' debe tener longitud 2n (n≥1). Se leyó ${y1Count}.`,
+              steps
+            };
+          }
+          phase = "z";
+        } else {
+          return { aceptada: false, motivo: "Después del primer bloque de y solo puede venir 'z'.", steps };
+        }
+      }
+
+      if (phase === "z") {
+        if (c === "z") {
+          const estadoAntes = state;
+          const pilaAntes = stack.slice();
+
+          if (zCount === 0) {
+            state = "q2";
+            zCount++;
+            const accion = "leer z";
+            registrarPaso("z", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          } else {
+            state = "q2";
+            stack.push("Z");
+            zCount++;
+            const accion = "leer z";
+            registrarPaso("z", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          }
+
+          i++;
+          continue;
+        }
+
+        if (c === "y") {
+          if (zCount < 6 || zCount % 2 !== 0) {
+            return {
+              aceptada: false,
+              motivo: `El bloque de 'z' debe tener longitud 2m+2 con m≥2 (par y ≥ 6). Se leyó ${zCount}.`,
+              steps
+            };
+          }
+          phase = "y2";
+        } else {
+          return { aceptada: false, motivo: "Solo se permiten 'z' en el bloque central, luego 'y'.", steps };
+        }
+      }
+
+      if (phase === "y2") {
+        if (c === "y") {
+          const estadoAntes = state;
+          const pilaAntes = stack.slice();
+
+          if (y2Count === 0) {
+            state = "q3";
+            const accion = "inicio y finales";
+            y2Count++;
+            registrarPaso("y", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          } else {
+            state = "q3";
+            if (stack[stack.length - 1] === "Z") {
+              stack.pop();
+            }
+            y2Count++;
+            const accion = "leer y final (grupo)";
+            registrarPaso("y", estadoAntes, state, pilaAntes, stack.slice(), accion, i + 1);
+          }
+
+          i++;
+          continue;
+        } else {
+          return { aceptada: false, motivo: "El bloque final solo puede contener 'y'.", steps };
+        }
+      }
+    }
+
+    if (phase !== "y2") {
+      return {
+        aceptada: false,
+        motivo: "La cadena termina antes de completar todas las partes del patrón.",
+        steps
+      };
+    }
+
+    const n = y1Count / 2;
+    if (y2Count !== 3 * n) {
+      return {
+        aceptada: false,
+        motivo: `El bloque final de 'y' debe tener longitud 3n. Se esperaba ${3 * n} y se leyó ${y2Count}.`,
+        steps
+      };
+    }
+
+    if (zCount < 6 || zCount % 2 !== 0) {
+      return {
+        aceptada: false,
+        motivo: `El bloque de 'z' debe tener longitud 2m+2 con m≥2 (par y ≥ 6). Se leyó ${zCount}.`,
+        steps
+      };
+    }
+
+    const estadoAntes = state;
+    const pilaAntes = stack.slice();
+    state = "q4";
+    const accionFinal = "λ, transición de aceptación (fin de cadena y condiciones cumplidas).";
+    registrarPaso("", estadoAntes, state, pilaAntes, stack.slice(), accionFinal, nCadena);
+
+    return {
+      aceptada: true,
+      motivo: "",
+      steps
+    };
+  }
+
+  btnComprobar.addEventListener("click", () => {
+    const cadena = inputCadena.value.trim();
+
+    if (!cadena) {
+      mostrarResultado({ aceptada: false, motivo: "Ingrese una cadena para simular." });
+      limpiarSalidas();
+      return;
+    }
+
+    if (!/^[xyz]+$/.test(cadena)) {
+      mostrarResultado({ aceptada: false, motivo: "Solo se permiten los símbolos x, y y z." });
+      limpiarSalidas();
+      return;
+    }
+
+    const resultado = simularCadena(cadena);
+    mostrarResultado(resultado);
+    iniciarAnimacion(resultado.steps);
+  });
+
+  btnEjemplo.addEventListener("click", () => {
+    inputCadena.value = "yyzzzzzzyyy"; // ejemplo original
+    highlightState("q0");
+    clearArrowHighlight();
+  });
+
+  // ejemplos adicionales
+  const btnEjemplo2 = document.getElementById("btnEjemplo2");
+  const btnEjemplo3 = document.getElementById("btnEjemplo3");
+
+  btnEjemplo2.addEventListener("click", () => {
+    inputCadena.value = "xxyyzzzzzzyyy"; // ejemplo válido con x
+    highlightState("q0");
+    clearArrowHighlight();
+  });
+
+  btnEjemplo3.addEventListener("click", () => {
+    inputCadena.value = "yyyyzzzzzzzzyyyyyy"; // ejemplo que debería ser rechazado
+    highlightState("q0");
+    clearArrowHighlight();
+  });
+
+  highlightState("q0");
+</script>
+</body>
+</html>
