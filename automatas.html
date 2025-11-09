@@ -59,6 +59,25 @@
       backdrop-filter: blur(8px);
     }
 
+    /* 🔹 BOTÓN VOLVER AL INICIO */
+    .btn-inicio {
+      padding: 9px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f9fafb;
+      background: linear-gradient(135deg, #06b6d4, #6366f1);
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-inicio:hover {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+      box-shadow: 0 12px 25px rgba(79, 70, 229, 0.5);
+    }
+
     main {
       padding: 20px 22px;
       max-width: 1300px;
@@ -455,14 +474,17 @@
   </style>
 </head>
 <body>
+
 <header>
   <div class="header-title">
     <h1>Simulador PDA</h1>
     <span>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</span>
   </div>
-  <div class="header-tag">
-    Autómatas y Lenguajes Formales
-  </div>
+
+  <!-- 🏠 BOTÓN VOLVER AL INICIO -->
+  <button class="btn-inicio" onclick="window.location.href='index.html'">
+    🏠 Volver al inicio
+  </button>
 </header>
 
 <main>
