@@ -9,15 +9,12 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", sans-serif;
     }
-
-    /* FONDO ELEGANTE: ROSA + AZUL SUAVE */
     body {
       margin: 0;
       background: radial-gradient(circle at top left, #fce7f3 0%, #e0f2fe 40%, #ffffff 100%);
       color: #0f172a;
     }
 
-    /* HEADER ESTILO BARRA SUPERIOR ELEGANTE */
     header {
       display: flex;
       align-items: center;
@@ -58,8 +55,6 @@
       white-space: nowrap;
       backdrop-filter: blur(8px);
     }
-
-    /* 🔹 BOTÓN VOLVER AL INICIO */
     .btn-inicio {
       padding: 9px 18px;
       border-radius: 12px;
@@ -84,7 +79,6 @@
       margin: 0 auto 40px auto;
     }
 
-    /* LAYOUT 3 COLUMNAS */
     .layout {
       display: grid;
       grid-template-columns: 0.9fr 1.1fr 1.1fr;
@@ -97,7 +91,6 @@
       }
     }
 
-    /* TARJETAS TIPO GLASS */
     .card {
       background: rgba(255, 255, 255, 0.86);
       border-radius: 20px;
@@ -188,7 +181,6 @@
       align-items: center;
     }
 
-    /* BOTONES MÁS ELEGANTES: ROSA + AZUL */
     button {
       padding: 9px 16px;
       border-radius: 12px;
@@ -260,7 +252,6 @@
       color: #b91c1c;
     }
 
-    /* === TABLA MODERNA Y BONITA === */
     table {
       width: 100%;
       border-collapse: separate;
@@ -357,7 +348,6 @@
       border: 1px solid rgba(203, 213, 225, 0.9);
     }
 
-    /* ---------- AUTÓMATA VISUAL ---------- */
     .pda-diagram {
       margin-top: 10px;
       padding: 14px;
@@ -423,7 +413,6 @@
       font-size: 0.9rem;
     }
 
-    /* COLUMNAS DEL LAYOUT */
     .col-diagrama {
       display: flex;
       flex-direction: column;
@@ -440,7 +429,6 @@
       gap: 16px;
     }
 
-    /* --- NUEVA SECCIÓN PARA LA IMAGEN GRANDE + VIDEO (fuera del layout) --- */
     .prototipo-section {
       margin-top: 40px;
       display: flex;
@@ -478,10 +466,9 @@
 <header>
   <div class="header-title">
     <h1>Simulador PDA</h1>
-    <span>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</span>
+    <span>L = {x* y²ⁿ zᵐ zᵐ⁺² y³ⁿ | n≥1, m≥ 2 }</span>
   </div>
 
-  <!-- 🏠 BOTÓN VOLVER AL INICIO -->
   <button class="btn-inicio" onclick="window.location.href='index.html'">
     🏠 Volver al inicio
   </button>
@@ -489,7 +476,6 @@
 
 <main>
   <div class="layout">
-    <!-- COLUMNA IZQUIERDA: DIAGRAMA Y FORMAL -->
     <section class="col-diagrama">
       <div class="card">
         <h3>Diagrama del PDA</h3>
@@ -505,7 +491,6 @@ Transiciones (idea):
 - q3 --λ, Z0 ; Z0--> q4       aceptación
         </pre>
 
-        <!-- AUTÓMATA VISUAL MOVIBLE -->
         <div class="pda-diagram">
           <div id="state-q0" class="pda-state">q0</div>
           <div id="arrow-q0-q1" class="pda-arrow">→</div>
@@ -566,7 +551,7 @@ F = {q4}
         <h3>Notas del lenguaje</h3>
         <p class="small">
           El autómata verifica cadenas de la forma
-          <code>x* y^{2n} z^{m} z^{m+2} y^{3n}</code> con <strong>n ≥ 1</strong> y
+          <code> x* y²ⁿ zᵐ zᵐ⁺² y³ⁿ </code> con <strong>n ≥ 1</strong> y
           <strong>m ≥ 2</strong>. El primer bloque de <code>y</code> tiene longitud
           par, el bloque central de <code>z</code> es par y al menos 6, y el bloque final
           de <code>y</code> se agrupa en triples.
@@ -574,7 +559,6 @@ F = {q4}
       </div>
     </section>
 
-    <!-- COLUMNA DERECHA: TABLA Y DI -->
     <section class="col-derecha">
       <div class="card">
         <h3>Tabla de pasos</h3>
@@ -601,13 +585,11 @@ F = {q4}
       <div class="card">
         <h3>Descripción instantánea</h3>
         <ul id="listaDI" class="lista-di">
-          <!-- dinámico -->
         </ul>
       </div>
     </section>
   </div>
 
-  <!-- SECCIÓN NUEVA: IMAGEN GRANDE + BOTÓN VIDEO A LA DERECHA -->
   <section class="prototipo-section">
     <div class="prototipo-img">
       <h3 style="color:#be185d; text-align:center; margin-top:0;">Vista del prototipo</h3>
@@ -986,4 +968,5 @@ F = {q4}
 </script>
 </body>
 </html>
+
 
