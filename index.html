@@ -1,37 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Automatas</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Bienvenido al Simulador PDA</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #0f172a;
+      background: radial-gradient(circle at top left, #fce7f3 0%, #e0f2fe 50%, #ffffff 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #be185d;
+      text-shadow: 0 4px 10px rgba(190, 24, 93, 0.3);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-weight: 400;
+      color: #374151;
+      margin-top: 0;
+      font-size: 1.2rem;
+      max-width: 650px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      padding: 50px 60px;
+      text-align: center;
+      max-width: 800px;
+      backdrop-filter: blur(8px);
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px rgba(236, 72, 153, 0.5);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
-<body class="login-page">
-    <div class="login-box">
-        <h2>Iniciar Sesión</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Usuario" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button type="submit">Entrar</button>
-        </form>
-        <p class="error" id="errorMsg"></p>
-    </div>
+<body>
+  <div class="card">
+    <h1>👋 ¡Bienvenido al Simulador de Autómata de Pila!</h1>
+    <h2>
+      Esta herramienta interactiva te permitirá comprender el funcionamiento del lenguaje 
+      <code>L = { x* y²ⁿ zᵐ z⁽ᵐ+2⁾ y³ⁿ | n ≥ 1, m ≥ 2 }</code>, 
+      visualizando paso a paso las transiciones del autómata, su pila y los estados de aceptación.
+    </h2>
 
-    <script>
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
-            e.preventDefault();
+    <button onclick="window.location.href='automatas.html'">
+      🚀 Bienvenido — Disfruta y Aprende
+    </button>
+  </div>
 
-            const user = document.getElementById("username").value;
-            const pass = document.getElementById("password").value;
-            const error = document.getElementById("errorMsg");
-
-            // Usuario de ejemplo
-            if (user === "admin" && pass === "1234") {
-                window.location.href = "dashboard.html"; // Ir a la segunda página
-            } else {
-                error.textContent = "Usuario o contraseña incorrectos";
-            }
-        });
-    </script>
+  <footer>Universidad Mariano Gálvez • Autómatas y Lenguajes Formales</footer>
 </body>
 </html>

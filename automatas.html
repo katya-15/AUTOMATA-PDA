@@ -10,24 +10,23 @@
         "Segoe UI", sans-serif;
     }
 
-    /* FONDO ROSA PÁLIDO DIFERENTE (GRADIENTE) */
+    /* FONDO ELEGANTE: ROSA + AZUL SUAVE */
     body {
       margin: 0;
-      background: radial-gradient(circle at top left, #ffe4e6 0%, #fff1f2 40%, #ffffff 100%);
-      color: #1f2937;
+      background: radial-gradient(circle at top left, #fce7f3 0%, #e0f2fe 40%, #ffffff 100%);
+      color: #0f172a;
     }
 
-    /* HEADER TIPO BARRA SUPERIOR */
+    /* HEADER ESTILO BARRA SUPERIOR ELEGANTE */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 12px 24px;
-      background: #f472b6;
-      background: linear-gradient(90deg, #f973b7, #ec4899, #db2777);
-      color: #fdf2f8;
-      box-shadow: 0 4px 16px rgba(236, 72, 153, 0.45);
+      padding: 14px 26px;
+      background: linear-gradient(90deg, #ec4899, #6366f1, #06b6d4);
+      color: #f9fafb;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.35);
       position: sticky;
       top: 0;
       z-index: 10;
@@ -49,53 +48,57 @@
       opacity: 0.95;
     }
     .header-tag {
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(254, 249, 195, 0.25);
-      border: 1px solid rgba(254, 240, 138, 0.7);
-      color: #fefce8;
+      background: rgba(15, 23, 42, 0.16);
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      color: #e0f2fe;
       font-size: 0.8rem;
       font-weight: 600;
       white-space: nowrap;
+      backdrop-filter: blur(8px);
     }
 
     main {
-      padding: 18px 22px;
+      padding: 20px 22px;
       max-width: 1300px;
       margin: 0 auto 40px auto;
     }
 
-    /* NUEVO LAYOUT: 3 COLUMNAS */
+    /* LAYOUT 3 COLUMNAS */
     .layout {
       display: grid;
-      grid-template-columns: 0.95fr 1.05fr 1.1fr;
-      gap: 18px;
+      grid-template-columns: 0.9fr 1.1fr 1.1fr;
+      gap: 20px;
       align-items: flex-start;
     }
-
     @media (max-width: 1050px) {
       .layout {
         grid-template-columns: 1fr;
       }
     }
 
+    /* TARJETAS TIPO GLASS */
     .card {
-      background: #ffffff;
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 20px;
       padding: 16px 18px;
-      border: 1px solid #fecdd3;
-      box-shadow: 0 16px 30px rgba(248, 113, 161, 0.18);
+      border: 1px solid rgba(248, 187, 208, 0.9);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(248, 250, 252, 0.6);
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(8px);
     }
     .card::before {
       content: "";
       position: absolute;
       inset: 0;
-      opacity: 0.06;
+      opacity: 0.16;
       background:
         radial-gradient(circle at top left, #f9a8d4 0, transparent 55%),
-        radial-gradient(circle at bottom right, #fed7e2 0, transparent 55%);
+        radial-gradient(circle at bottom right, #bfdbfe 0, transparent 55%);
       pointer-events: none;
     }
     .card > * {
@@ -106,12 +109,23 @@
       margin-top: 0;
       margin-bottom: 8px;
       font-size: 1.02rem;
-      color: #9d174d;
+      color: #be185d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card h3::before {
+      content: "";
+      width: 6px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ec4899, #0ea5e9);
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
     }
     .card h4 {
       margin: 8px 0;
       font-size: 0.93rem;
-      color: #be185d;
+      color: #7e22ce;
     }
 
     .small {
@@ -123,37 +137,39 @@
       font-weight: 600;
       display: block;
       margin-bottom: 4px;
-      color: #4b5563;
+      color: #334155;
     }
+
     input[type="text"] {
       width: 100%;
-      padding: 10px 12px;
+      padding: 10px 13px;
       border-radius: 999px;
       border: 1px solid #fecdd3;
-      background: #fff1f2;
-      color: #111827;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
       font-size: 0.95rem;
       outline: none;
-      transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
+      transition: box-shadow 0.15s, border-color 0.15s, background 0.15s, transform 0.1s;
     }
     input[type="text"]::placeholder {
       color: #9ca3af;
     }
     input[type="text"]:focus {
-      border-color: #ec4899;
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.35);
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.35);
       background: #ffffff;
+      transform: translateY(-1px);
     }
 
     .botones {
       margin-top: 10px;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
       align-items: center;
     }
 
-    /* BOTONES ROSA BONITOS (YA DIFERENTES AL ORIGINAL) */
+    /* BOTONES MÁS ELEGANTES: ROSA + AZUL */
     button {
       padding: 9px 16px;
       border-radius: 12px;
@@ -161,34 +177,34 @@
       cursor: pointer;
       font-size: 0.9rem;
       font-weight: 700;
-      color: #fdf2f8;
-      background: radial-gradient(circle at top left, #f9a8d4, #ec4899 55%, #db2777);
-      box-shadow: 0 8px 22px rgba(236, 72, 153, 0.55);
+      color: #f9fafb;
+      background: linear-gradient(135deg, #ec4899, #6366f1);
+      box-shadow: 0 10px 26px rgba(79, 70, 229, 0.45);
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
     }
     button.segundo {
-      background: radial-gradient(circle at top left, #fed7aa, #fb7185 55%, #f97316);
-      box-shadow: 0 8px 22px rgba(249, 115, 22, 0.5);
+      background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+      box-shadow: 0 10px 26px rgba(14, 165, 233, 0.5);
     }
     button:hover {
       filter: brightness(1.05);
       transform: translateY(-1px) scale(1.03);
-      box-shadow: 0 12px 26px rgba(236, 72, 153, 0.6);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.5);
     }
     button:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
+      box-shadow: 0 5px 14px rgba(30, 64, 175, 0.4);
     }
 
     .velocidad {
-      margin-top: 4px;
+      margin-top: 8px;
       font-size: 0.83rem;
-      color: #6b7280;
+      color: #64748b;
       display: flex;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -198,6 +214,10 @@
       align-items: center;
       gap: 4px;
       margin-bottom: 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(226, 232, 240, 0.8);
     }
 
     .resultado {
@@ -221,78 +241,110 @@
       color: #b91c1c;
     }
 
-    /* TABLA */
+    /* === TABLA MODERNA Y BONITA === */
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       margin-top: 10px;
       font-size: 0.8rem;
     }
     thead {
-      background: #ffe4e6;
       position: sticky;
       top: 0;
       z-index: 1;
     }
-    th, td {
-      border: 1px solid #fecdd3;
-      padding: 4px 6px;
-      text-align: center;
+    thead tr {
+      background: linear-gradient(90deg, #f9a8d4, #bfdbfe);
     }
     th {
-      color: #9d174d;
+      padding: 6px 8px;
+      text-align: center;
       font-weight: 700;
+      color: #312e81;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
     }
-    tbody {
-      background: #fffafc;
+    th:last-child {
+      border-right: none;
     }
+
+    tbody tr {
+      transition: background 0.12s, transform 0.08s, box-shadow 0.08s;
+    }
+    tbody tr:nth-child(even) {
+      background: #fdf2ff;
+    }
+    tbody tr:nth-child(odd) {
+      background: #f9fafb;
+    }
+    td {
+      padding: 5px 6px;
+      text-align: center;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      border-right: 1px solid rgba(226, 232, 240, 0.7);
+    }
+    td:last-child {
+      border-right: none;
+    }
+    tbody tr:hover {
+      background: #e0f2fe;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.35);
+    }
+
     .tabla-contenedor {
       max-height: 280px;
       overflow-y: auto;
-      border-radius: 12px;
-      border: 1px solid #fecdd3;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
       margin-top: 6px;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(248, 250, 252, 0.8);
     }
 
     .lista-di {
       margin-top: 10px;
       max-height: 180px;
       overflow-y: auto;
-      border-radius: 12px;
-      border: 1px solid #fecdd3;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
       padding: 8px;
       font-size: 0.82rem;
-      background: #fffafc;
+      background: rgba(248, 250, 252, 0.95);
     }
     .lista-di li {
       margin-bottom: 4px;
+      padding: 3px 6px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
     }
 
     code {
-      background: #fff1f2;
+      background: #eef2ff;
       padding: 1px 4px;
       border-radius: 4px;
       font-size: 0.85rem;
-      color: #be123c;
+      color: #4c1d95;
     }
     pre {
-      background: #fff7fb;
+      background: rgba(248, 250, 252, 0.95);
       border-radius: 12px;
       padding: 8px;
       font-size: 0.82rem;
       overflow-x: auto;
       white-space: pre-wrap;
-      border: 1px solid #fecdd3;
+      border: 1px solid rgba(203, 213, 225, 0.9);
     }
 
     /* ---------- AUTÓMATA VISUAL ---------- */
     .pda-diagram {
       margin-top: 10px;
       padding: 14px;
-      border-radius: 16px;
-      border: 1px solid #fecdd3;
-      background: radial-gradient(circle at top left, #fce7f3, #fff);
+      border-radius: 18px;
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      background: radial-gradient(circle at top left, #fdf2ff, #eff6ff);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -300,17 +352,17 @@
       overflow-x: auto;
     }
     .pda-state {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+      width: 62px;
+      height: 62px;
+      border-radius: 999px;
       background: #fef9c3;
-      color: #1f2937;
+      color: #111827;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
       position: relative;
-      box-shadow: 0 4px 10px rgba(248, 113, 165, 0.4);
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.5);
       transition: transform 0.2s, box-shadow 0.2s, border 0.2s, background 0.2s, color 0.2s;
       border: 2px solid transparent;
       flex-shrink: 0;
@@ -332,27 +384,27 @@
     .pda-arrow {
       flex-shrink: 0;
       font-size: 1.4rem;
-      color: #fb7185;
+      color: #38bdf8;
       transition: transform 0.2s, color 0.2s, text-shadow 0.2s;
     }
     .pda-arrow-active {
-      color: #be123c;
+      color: #1d4ed8;
       transform: scale(1.3);
-      text-shadow: 0 0 12px rgba(190, 18, 60, 0.9);
+      text-shadow: 0 0 12px rgba(37, 99, 235, 0.9);
     }
 
     .estado-actual-label,
     .transicion-actual-label {
       margin-top: 6px;
       font-size: 0.83rem;
-      color: #4b5563;
+      color: #475569;
     }
     .estado-actual-label code,
     .transicion-actual-label code {
       font-size: 0.9rem;
     }
 
-    /* COLUMNAS ESPECÍFICAS DEL LAYOUT */
+    /* COLUMNAS DEL LAYOUT */
     .col-diagrama {
       display: flex;
       flex-direction: column;
@@ -369,6 +421,37 @@
       gap: 16px;
     }
 
+    /* --- NUEVA SECCIÓN PARA LA IMAGEN GRANDE + VIDEO (fuera del layout) --- */
+    .prototipo-section {
+      margin-top: 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .prototipo-img {
+      flex: 2;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+      padding: 15px;
+    }
+    .prototipo-img img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .prototipo-video {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .prototipo-video a button {
+      width: 100%;
+      max-width: 250px;
+      background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+    }
   </style>
 </head>
 <body>
@@ -434,7 +517,7 @@ F = {q4}
       </div>
     </section>
 
-    <!-- COLUMNA CENTRAL: ENTRADA Y RESULTADO -->
+    <!-- COLUMNA CENTRAL: ENTRADA Y NOTAS -->
     <section class="col-centro">
       <div class="card">
         <h3>Entrada de la cadena</h3>
@@ -444,6 +527,8 @@ F = {q4}
         <div class="botones">
           <button id="btnComprobar">Comprobar</button>
           <button id="btnEjemplo" class="segundo">Cargar ejemplo</button>
+          <button id="btnEjemplo2" class="segundo">Ejemplo 2</button>
+          <button id="btnEjemplo3" class="segundo">Ejemplo 3</button>
         </div>
         <div class="velocidad">
           <span>Velocidad:</span>
@@ -499,6 +584,21 @@ F = {q4}
       </div>
     </section>
   </div>
+
+  <!-- SECCIÓN NUEVA: IMAGEN GRANDE + BOTÓN VIDEO A LA DERECHA -->
+  <section class="prototipo-section">
+    <div class="prototipo-img">
+      <h3 style="color:#be185d; text-align:center; margin-top:0;">Vista del prototipo</h3>
+      <img src="Ejercicio.png" alt="Vista del Prototipo del Autómata PDA">
+    </div>
+
+    <div class="prototipo-video">
+      <a href="https://drive.google.com/drive/folders/1EhI-iqt1pDZKcQPCHZrrqD4kBLk83GYq?usp=sharing"
+         target="_blank" rel="noopener noreferrer">
+        <button class="segundo">🎥 Ver video del Funcionamiento</button>
+      </a>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -575,7 +675,7 @@ F = {q4}
       msgResultado.textContent = "CADENA ACEPTADA ✅";
       msgResultado.className = "resultado aceptada";
     } else {
-      msgResultado.textContent = "CADENA FUE RECHAZADA ❌  " + resultado.motivo;
+      msgResultado.textContent = "CADENA RECHAZADA ❌  " + resultado.motivo;
       msgResultado.className = "resultado rechazada";
     }
   }
@@ -839,7 +939,23 @@ F = {q4}
   });
 
   btnEjemplo.addEventListener("click", () => {
-    inputCadena.value = "yyzzzzzzyyy"; // ejemplo
+    inputCadena.value = "yyzzzzzzyyy"; // ejemplo original
+    highlightState("q0");
+    clearArrowHighlight();
+  });
+
+  // ejemplos adicionales
+  const btnEjemplo2 = document.getElementById("btnEjemplo2");
+  const btnEjemplo3 = document.getElementById("btnEjemplo3");
+
+  btnEjemplo2.addEventListener("click", () => {
+    inputCadena.value = "xxyyzzzzzzyyy"; // ejemplo válido con x
+    highlightState("q0");
+    clearArrowHighlight();
+  });
+
+  btnEjemplo3.addEventListener("click", () => {
+    inputCadena.value = "yyyyzzzzzzzzyyyyyy"; // ejemplo que debería ser rechazado
     highlightState("q0");
     clearArrowHighlight();
   });
